@@ -8,7 +8,7 @@ Brief from the professor: [docs/enunciado_profesor.pdf](docs/enunciado_profesor.
 ## Setup (WSL / Linux)
 
 ```bash
-git clone git@github.com:tomas20oriol-jpg/miopia-ml-project.git
+git clone https://github.com/tomas20oriol-jpg/miopia-ml-project.git
 cd miopia-ml-project
 poetry install
 ```
