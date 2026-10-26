@@ -7,10 +7,20 @@ __pycache__/
 .idea/
 
 # Student health data: do not publish; each member copies it into data/raw/
-data/raw/*.csv
-data/processed/*
-!data/processed/.gitkeep
+data/*
 
 # Heavy model artifacts
 models/*
 !models/.gitkeep
+
+# Safety net: never commit raw tables or big binaries anywhere
+*.csv
+*.xlsx
+*.parquet
+*.pkl
+*.joblib
+*.h5
+*.keras
+*.pt
+*.pth
+*.zip
