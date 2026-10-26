@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.DS_Store
+.vscode/
+.idea/
+
+# Student health data: do not publish; each member copies it into data/raw/
+data/raw/*.csv
+data/processed/*
+!data/processed/.gitkeep
+
+# Heavy model artifacts
+models/*
+!models/.gitkeep
