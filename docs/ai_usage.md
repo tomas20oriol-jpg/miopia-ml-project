@@ -4,7 +4,7 @@ Required for the final slides ("how you used generative AI models throughout the
 
 | Date | Area | What the AI did | What the human did / decided |
 |---|---|---|---|
-| before 2026-10-29 | EDA (`01_eda`), project scaffolding | Not recorded | Ana committed the EDA notebook and figures; Tomas committed the project template (git history) |
+| before 2026-10-29 | EDA (`01_eda`), project scaffolding | Support with code, and answers to doubts and conceptual questions (as stated by Ana) | Ana committed the EDA notebook and figures; Tomas committed the project template (git history) |
 | 2026-10-29 | Tooling/setup | Claude Code read the brief and the repo and wrote `CLAUDE.md`, six subagents (notebook runner, methodology reviewer, model experimenter, chart reviewer, slides writer, deliverables checker) and two project skills | The user asked for the environment and supplied the brief |
 | 2026-10-29 | Tooling/setup | Claude Code searched for existing skills (marketplace and web), vetted and installed the `scikit-learn` skill with two edits, and assigned skills to the agents | The user asked for the skill search and assignment |
 | 2026-10-29 | Tooling/setup | Claude Code wrote `docs/assignment.md` (the brief as a checklist) and `docs/assumptions.md` (open decisions), and linked them to `CLAUDE.md` and the agents | The user asked for both documents |
@@ -18,3 +18,5 @@ Required for the final slides ("how you used generative AI models throughout the
 | 2026-11-01 | Features, models (notebook 04) | Claude Code proposed the axial/corneal ratio and an ordinal model, searched the web for the literature on the ratio, and wrote and ran both experiments | Ana asked to try them and to add the literature to the work |
 | 2026-11-01 | Review, report text (notebooks 01-04) | An AI audit checked the consistency of the project, and Claude Code corrected the texts and the title of one figure in notebook 01, reworded the assumptions, and updated the notebook 01 figures | Ana asked for the check and the corrections |
 | 2026-11-01 | Final models, interpretation, test labels (notebook 05) | Claude Code wrote and executed `05_final_models.ipynb`, which fits the final models, analyses their errors and writes `results/test_labels.txt` | Ana asked for it |
+| 2026-11-01 | Overall use, as stated by Ana | Used for support with code, and for doubts and conceptual questions | The team took the decisions, and also proposed to the AI ideas about what could be done |
+| 2026-11-01 | Review, slides | AI review agents (methodology and charts) checked notebook 05, and Claude Code applied their findings; Claude Code built `slides/myopia_presentation.pptx` with speaker notes | Ana asked for both, stated the 50/50 split and the joint work, and reviewed the AI-use slide |

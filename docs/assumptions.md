@@ -41,8 +41,8 @@ Status: `OPEN` (not decided) · `ASSUMED` (working default, please confirm) · `
 
 | # | Assumption | Status | Why it matters / how to settle it |
 |---|---|---|---|
-| C1 | The work was done together by Ana and Tomas, taking the decisions jointly (stated by Ana, 2026-11-01). Whether to state a 50/50 split on the final slide is still to be confirmed. | ASSUMED | Mandatory final slides. Never invent it: the user fills `[TO FILL]` placeholders. |
-| C2 | Who made `01_eda` and with how much AI help. | OPEN | Needed for the AI-usage slide (the first row of `docs/ai_usage.md` says "Not recorded"). |
+| C1 | The work was done together by Ana and Tomas, taking the decisions jointly (stated by Ana, 2026-11-01). The split was 50/50 (stated by Ana, 2026-11-01). | DECIDED | Mandatory final slides. Never invent it: the user fills `[TO FILL]` placeholders. |
+| C2 | How AI was used on `01_eda`. | DECIDED | Ana stated on 2026-11-01 that the team used AI as support with code and for doubts and conceptual questions. |
 | C3 | The video is recorded by the user, 10 minutes, after the slides are final. | ASSUMED | Not something Claude can do. |
 | C4 | The zip does not include `data/` and may include `models/` only if the notebooks need saved models to run. | ASSUMED | The brief excludes train and test data. Prefer notebooks that retrain in minutes. |
 | C5 | The student data are confidential: not committed, not uploaded to any external service, no individual rows in outputs or slides. | ASSUMED | The brief does not say so; this is a conservative default for health data. |
