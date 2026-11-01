@@ -15,12 +15,11 @@ Append one row to the table in `docs/ai_usage.md`:
 
 - **Area**: EDA, features, validation, models, charts, report text, slides, tooling/setup, review.
 - **What the AI did**: concrete and specific (e.g. "wrote the `RepeatedStratifiedKFold` comparison code", "proposed using permutation importance", "reviewed notebook 03 for leakage"). Mention subagent reviews as AI work.
-- **What the human did**: decisions, checks, edits, parts written by hand. If the user did not say, write `[ask the user]` rather than guessing.
+- **What the human did**: decisions, checks, edits, parts written by hand. If the user did not say, record only what is known and do not guess.
 - One line each, plain words, no number-packed detail.
 
 ## Rules
 - Never delete or soften past entries. Never invent work Claude did not do, and never credit the AI for something the user did.
-- Entries about the earlier notebook `01_eda` are unknown unless the user says how it was made: leave them as `[ask the user]`.
 - Do not log any student data.
 
 ## For the slide

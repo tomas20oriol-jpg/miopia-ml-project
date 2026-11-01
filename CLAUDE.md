@@ -54,11 +54,11 @@ Follow [Friends Don't Let Friends](https://github.com/cxli233/FriendsDontLetFrie
 - `phototype` is 45 % missing (the letters in `fototipo` are `Grupo fot` values): kept for now, decision B9 happens inside CV.
 - `fecha` and `pat. Ret. Miop magna` are not used (B10, and a consequence of the target).
 
-## Decisions so far (03, executed, reviews applied; B12 and B13 to be confirmed)
+## Decisions so far (03, executed, reviews applied)
 
 - Validation code is in `miopia.validation`: repeated stratified 5-fold x 10; `evaluate` fits on one label set and scores against another.
 - `MM` is trained on its column as provided (B2). In the experiment, corrected labels raised balanced accuracy and lowered accuracy and macro-F1.
-- Logistic on axial length alone matches all 33 features on balanced accuracy: notebook 04 must beat the better logistic baseline (B12).
+- Logistic on axial length alone matches all 33 features on balanced accuracy: notebook 04 must beat the better logistic baseline (B12). If balanced accuracy and macro-F1 disagree, accuracy decides and the report says so (B13).
 
 ## Plan
 
