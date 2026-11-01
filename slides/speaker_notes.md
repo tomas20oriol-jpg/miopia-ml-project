@@ -2,60 +2,64 @@
 
 ## Slide 1: Predicting myopia in medical students
 
-Hello. We are Ana and Tomás. This is our final project for the Machine Learning course. We predict myopia in third-year medical students, and we will show how we chose our models, and how much we trust the results. About 20 seconds.
+Ana: Hello, we are Ana and Tomás. In this project we tried to predict myopia in third-year medical students. With only 132 students, the interesting question was not only which model wins, but how much we can trust the result.
 
-## Slide 2: One dataset, four questions about myopia
+## Slide 2: The talk in three ideas
 
-The data come from third-year medical students at the University of Navarra. The brief asks for four predictions on 24 students with no labels. M is myopia, MM is myopia magna, above 6 dioptres. Combo joins them, and DCombo splits myopia into two types. Different models are allowed per task. About 40 seconds.
+Ana: Here is the talk in three ideas. First, complex models rarely beat a simple logistic regression on one measurement, the length of the eye. Second, a ratio from the medical literature helped more than adding complexity. And third, we measured how optimistic our own scores are, and part of the gain does not survive that check.
 
-## Slide 3: Few students, few cases, and messy columns
+## Slide 3: One dataset, four questions about myopia
 
-We have only 132 training students, and only 10 with myopia magna. So a model that always says no gets 92 percent accuracy and is useless. Exploring the data we found problems: phototype was mixed up with another column, so 45 percent of it is missing. And 8 students are myopia magna in Combo but not in the MM column. We turned 49 raw columns into 33 numeric features, and justified each one. About 50 seconds.
+Ana: The data come from students at the University of Navarra, and the brief asks for four predictions. Whether a student has myopia. Whether they have myopia magna, which is more than six dioptres. Combo, which joins both with a control class. And DCombo, which also splits myopia into two types. We have to produce labels for 24 test students whose answers we do not have.
 
-## Slide 4: With so little data, the method matters most
+## Slide 4: Few students, few cases, and messy columns
 
-One validation split would depend on which of the 10 positives land in it. So we repeat stratified 5-fold cross-validation 10 times, which leaves exactly 2 positives per fold in MM. Hyperparameters are tuned in nested cross-validation, and all preprocessing is fitted inside each fold. We do not select on accuracy alone, but we report it because the test is graded on it. Before choosing any model we wrote down a test it must pass. One route of that test was added after seeing validation results, never the test set, and the notebook says so. And the test set is used only once, to predict. About 60 seconds.
+Ana: The main difficulty is the size. There are 132 training students, and only 10 have myopia magna, so always answering no already gets 92 percent accuracy, and is useless. We also found problems in the data. Phototype was mixed up with a neighbouring column, so 45 percent of it is missing. And 8 students are myopia magna in Combo, but not in the MM column. We tried correcting them, and kept the labels as provided, because the only firm result of the correction was a drop in accuracy. We turned 49 raw columns into 33 numeric features.
 
-## Slide 5: Complex models rarely beat a one-feature baseline
+## Slide 5: With so little data, the method matters most
 
-We compared logistic regression, an SVM, a random forest and XGBoost, which we did not see in class. XGBoost builds small trees one after another, each correcting the errors of the previous ones. In orange is logistic regression on axial length alone. On balanced accuracy it is very hard to beat: only the random forest on Combo is clearly higher. XGBoost never came first. With 132 students, adding features and complexity brought mostly noise. About 50 seconds.
+Ana: With so little data, the method matters most. We repeat stratified five-fold cross-validation ten times, because a single split would depend on where a few positives land. Everything learned from data stays inside the training folds, and tuning uses nested cross-validation. We wrote down a test that a model must pass to replace a simpler one. It looks at balanced accuracy and macro-F1, and we report accuracy too. One route of that test was added after seeing validation results, and the report says so. The test students are used only once, to predict.
 
-## Slide 6: Medicine gave us what complexity did not
+## Slide 6: Complex models rarely beat a one-feature baseline
 
-So we looked at the medicine. A person is myopic when the eye is too long for the power of the cornea. The ratio of axial length to corneal radius combines both. The literature, including a study of 193 university students, shows it rising with myopia, and in our students it rises at each step too. We computed it for each student without using labels. The units of keratometry are not stated, so we deduced dioptres from the data. About 50 seconds.
+Tomás: We compared logistic regression, an SVM, a random forest and XGBoost, which we did not see in class. XGBoost builds small trees one after another, each one correcting the errors of the previous ones. In orange is logistic regression on axial length alone. On balanced accuracy it is very hard to beat. Only the random forest on Combo is clearly higher, and XGBoost never comes first. With 132 students, more complexity mostly added noise.
 
-## Slide 7: With the ratio, a new model won on every target
+## Slide 7: Medicine gave us a better measurement
 
-Here are the final models, compared with the baseline of axial length alone. M and DCombo use logistic regression on axial length plus the ratio. Combo uses a random forest with the ratio added. MM uses logistic regression on the ratio alone, with a tuned threshold. We also tried an ordinal model for DCombo, not seen in class either, and it did not beat this. These are validation scores, and they are optimistic, as we will show. About 50 seconds.
+Tomás: So we looked at the medicine. A person is myopic when the eye is too long for the power of the cornea. The ratio of axial length to corneal radius combines both. A study of 193 university students reports it rising with myopia, and in our students it rises at each step too. We compute it for each student, without using labels. The brief does not give the units of keratometry, so we deduced dioptres from the data, and we say so in the report.
 
-## Slide 8: On MM, accuracy has a price: missed cases
+## Slide 8: With the ratio, a new model won on every target
 
-The MM model is a good example of a decision. With a threshold of 0.5 it finds 90 percent of positives, but its accuracy is below always saying no. Tuning the threshold inside the training data raises accuracy to 0.97, and it misses more cases. It passed the second route of our test, the one added after seeing validation results, and the test set is graded on accuracy. In a clinic the balance could differ: a threshold of 0.5 finds about one more of the 10 positives, with about 12 more false alarms, so it depends on the cost of each error. The choice is not fully firm: when we repeated the inner split, the criterion that passed changed. About 50 seconds.
+Tomás: With the ratio, a new model passed our test on every target. M and DCombo use logistic regression on axial length plus the ratio. Combo uses a random forest with the ratio added. And MM uses logistic regression on the ratio alone, with a tuned threshold. We also tried an ordinal model for DCombo, which respects the order of the classes. It passed the test, but scored below logistic regression with the ratio, so we did not choose it. These are validation scores, and in a moment we will show that they are optimistic.
 
-## Slide 9: The cornea may explain the eight odd students
+## Slide 9: On MM, accuracy has a price: missed cases
 
-Remember the 8 students who contradict themselves. Their eyes are as long as true MM cases, but their corneas are flatter, so their ratio is lower. One possible explanation is that the cornea partly compensates, so they stay under 6 dioptres, while Combo follows axial length. This is a hypothesis about 8 students: we have no refraction values, and their ratios overlap with the MM group. It is the kind of question we would take to an ophthalmologist. About 40 seconds.
+Tomás: MM shows that accuracy has a price. At the default threshold, the model finds 90 percent of the positives, but its accuracy is below always saying no. With a threshold tuned inside the training data, accuracy rises to 0.97, and the model finds 79 percent. Going back to 0.5 finds about one more of the ten positives, with about twelve more false alarms. We kept the tuned threshold, because it passed the second route of our test, and the test set is graded on accuracy. In a clinic, the choice would depend on what each error costs.
 
-## Slide 10: We measured how optimistic our scores are
+## Slide 10: The cornea may explain the eight odd students
 
-This is the slide we are most proud of. We chose these models using the same students who score them, after 42 selection tests. So we repeated an approximation of the whole selection inside the folds. The gain stays on M, nearly disappears on MM for balanced accuracy, and disappears on DCombo. We also fed our test useless information. On Combo it still passes about one time in three, so the choice of model there is weakly supported. On M and DCombo the real gain from the cornea is above chance. About 60 seconds.
+Tomás: The ratio also sheds light on the 8 students who contradict themselves. Their eyes are as long as those in the MM group, but their corneas are flatter, so their ratio is lower. One possible explanation is that the cornea partly compensates, keeping them under six dioptres, while Combo follows axial length. This is only a hypothesis about 8 students. We have no refraction values, and their ratios overlap with the MM group.
 
-## Slide 11: Most errors fall between neighbouring classes
+## Slide 11: We measured how optimistic our scores are
 
-What do the models use? Almost only axial length and the ratio, even the random forest, which has access to all the features. This does not mean that family or time outdoors have no effect: they may act through the length of the eye. Most errors are between neighbouring classes. In DCombo, 63 percent are right, 35 percent are one class away, and only 2 percent further. M1 is the hardest class, since without a direct measure of dioptres the line between mild myopia and none is blurred. About 50 seconds.
+Ana: This is the part we value most. We chose these models with the same students who score them, after 42 selection tests. So we repeated an approximation of the whole selection inside the folds. The gain stays on M, nearly disappears on MM for balanced accuracy, and disappears on DCombo. We also gave our test useless information. On Combo it still passes about one time in three, so the choice of model there is weakly supported. On M, MM and DCombo, the real gain from the cornea is above what a shuffled cornea gives. So the cornea seems to carry real information, but the exact gains are uncertain.
 
-## Slide 12: What we expect on the test set
+## Slide 12: Two features drive the models; errors stay close
 
-Before the labels are graded, this is what we expect. With 24 students, one student is worth about 0.04 of accuracy, and sampling alone moves a score by 4 to 5 students, so these are ranges and not promises. Both estimates are above the majority class on M, Combo and DCombo. MM goes from about level with the majority class to above it. And one risk: our model says myopia magna for 5 of the 24 test students, more than the 8 percent in training. That difference is compatible with chance, and we could not tell whether those are severe cases or false alarms. We did not change them, because that would be choosing with the test set. About 50 seconds.
+Ana: What do the models use? Almost only axial length and the ratio, even the random forest, which has all the features available. That describes the models, not the causes of myopia: family or time outdoors could act through the length of the eye. And where do they fail? Mostly between neighbouring classes. In DCombo, 63 percent of predictions are right, 35 percent are one class away, and 2 percent further. M1 is the hardest class.
 
-## Slide 13: What we take away
+## Slide 13: What we expect on the test set
 
-To conclude. First, with this little data, knowing the problem beat adding complexity. Second, the process matters as much as the score, and that includes admitting what we cannot be sure of. Third, the limit is partly the data: more students and a direct measure of refraction would help more than any model. Thank you. About 40 seconds.
+Ana: This is what we expect on the test set, before it is graded. With 24 students, sampling alone moves a score by four or five students, so these are ranges and not promises. On M, Combo and DCombo, both estimates are above the majority class. On MM, they go from about level with it to above it. One risk: our model says myopia magna for 5 of the 24 test students, against 8 percent in training. That is compatible with chance, and we did not change it, because that would be choosing with the test set.
 
-## Slide 14: Team and tools
+## Slide 14: What we take away
 
-These last slides are required by the brief. We did the work together, and took the decisions together, with a 50/50 split. We did not use Keras or PyTorch: with 132 students a neural network was hard to justify, and the brief leaves the method open. About 20 seconds.
+Tomás: To conclude, three ideas. In our comparisons, knowing the problem helped more than adding complexity. Measuring our own doubt is part of the result, and not an extra. And the limit is partly the data: more students and a direct measure of refraction would likely help more than another model. Thank you.
 
-## Slide 15: How we used generative AI
+## Slide 15: Team and tools
 
-We used generative AI, mainly Claude Code, throughout the work. It generated much of the code and the notebook text, proposed approaches and selection rules, searched the literature, reviewed our methodology and charts, built these slides and drafted their notes, and answered our conceptual questions. We took the decisions, and we also proposed ideas to the AI about what could be done. We also recorded the use in a log, included in the delivery. The whole presentation is about 10 minutes. About 30 seconds.
+Tomás: These last slides are required by the brief. We did all the parts together and took the decisions jointly, with a fifty-fifty split. We used neither Keras nor PyTorch. We used scikit-learn and XGBoost, because with 132 students neural networks were hard to justify.
+
+## Slide 16: How we used generative AI
+
+Tomás: We used generative AI throughout the work, mainly Claude Code. It generated much of the code and drafted the notebook text, answered our conceptual questions, proposed approaches and rules, found the literature on the ratio, reviewed the work, built these slides and drafted the script for this video. We took the decisions, proposed ideas to the AI, and kept a log of its use, which is included in the delivery. Thank you for watching.
