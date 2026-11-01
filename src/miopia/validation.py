@@ -26,7 +26,7 @@ SUMMARY_METRICS = ["balanced_accuracy", "macro_f1", "accuracy", "mcc"]
 
 
 def correct_mm_labels(Y: pd.DataFrame) -> pd.DataFrame:
-    """Return a copy of `Y` where every student with `Combo = MM` has `MM = SI` (decision B2)."""
+    """Return a copy of `Y` where every student with `Combo = MM` has `MM = SI` (the experiment of B2)."""
     corrected = Y.copy()
     corrected.loc[corrected["Combo"] == "MM", "MM"] = "SI"
     return corrected
@@ -76,7 +76,10 @@ def evaluate(model, X: pd.DataFrame, y_fit: pd.Series, y_score: pd.Series,
         recalls = recall_score(truth, pred, labels=classes, average=None, zero_division=0)
         row.update({f"recall_{c}": r for c, r in zip(classes, recalls)})
         if classes == ["NO", "SI"]:
-            score = fitted.predict_proba(X.iloc[val])[:, list(fitted.classes_).index("SI")]
+            if hasattr(fitted, "predict_proba"):
+                score = fitted.predict_proba(X.iloc[val])[:, list(fitted.classes_).index("SI")]
+            else:                                    # positive values mean the second class, SI
+                score = fitted.decision_function(X.iloc[val])
             row["auc"] = roc_auc_score(truth == "SI", score)
             row["average_precision"] = average_precision_score(truth == "SI", score)
         rows.append(row)
@@ -89,3 +92,18 @@ def paired_difference(new: pd.DataFrame, reference: pd.DataFrame, metric: str = 
     mean, sd = diff.mean(), diff.std(ddof=1)
     verdict = "clearly better" if mean > sd else "clearly worse" if mean < -sd else "no clear difference"
     return {"mean difference": mean, "sd across repeats": sd, "verdict": verdict}
+
+
+def selection_test(new: pd.DataFrame, reference: pd.DataFrame) -> dict:
+    """Apply the test of B14: `new` passes the reference by route A or route B (B12, B13)."""
+    verdicts = {m: paired_difference(new, reference, m) for m in ["balanced_accuracy", "macro_f1", "accuracy"]}
+    balanced, f1, accuracy = (verdicts[m]["verdict"] for m in ["balanced_accuracy", "macro_f1", "accuracy"])
+    route_a = balanced == "clearly better" and (f1 != "clearly worse" or accuracy == "clearly better")
+    route_b = balanced != "clearly worse" and f1 == "clearly better" and accuracy == "clearly better"
+    row = {}
+    for metric, result in verdicts.items():
+        row[f"{metric}: difference"] = result["mean difference"]
+        row[f"{metric}: verdict"] = result["verdict"]
+    row["passes"] = route_a or route_b
+    row["route"] = "A" if route_a else "B" if route_b else ""
+    return row

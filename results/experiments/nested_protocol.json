@@ -1,0 +1,88 @@
+{
+ "means": {
+  "Combo": {
+   "whole protocol balanced accuracy": 0.701,
+   "whole protocol macro-F1": 0.692,
+   "whole protocol accuracy": 0.677,
+   "fixed choice balanced accuracy": 0.731,
+   "fixed choice macro-F1": 0.732,
+   "fixed choice accuracy": 0.725,
+   "axial logistic balanced accuracy": 0.713,
+   "axial logistic macro-F1": 0.664,
+   "axial logistic accuracy": 0.654
+  },
+  "DCombo": {
+   "whole protocol balanced accuracy": 0.594,
+   "whole protocol macro-F1": 0.585,
+   "whole protocol accuracy": 0.574,
+   "fixed choice balanced accuracy": 0.658,
+   "fixed choice macro-F1": 0.642,
+   "fixed choice accuracy": 0.637,
+   "axial logistic balanced accuracy": 0.594,
+   "axial logistic macro-F1": 0.575,
+   "axial logistic accuracy": 0.554
+  },
+  "M": {
+   "whole protocol balanced accuracy": 0.791,
+   "whole protocol macro-F1": 0.769,
+   "whole protocol accuracy": 0.786,
+   "fixed choice balanced accuracy": 0.809,
+   "fixed choice macro-F1": 0.788,
+   "fixed choice accuracy": 0.805,
+   "axial logistic balanced accuracy": 0.767,
+   "axial logistic macro-F1": 0.748,
+   "axial logistic accuracy": 0.773
+  },
+  "MM": {
+   "whole protocol balanced accuracy": 0.817,
+   "whole protocol macro-F1": 0.774,
+   "whole protocol accuracy": 0.916,
+   "fixed choice balanced accuracy": 0.888,
+   "fixed choice macro-F1": 0.871,
+   "fixed choice accuracy": 0.962,
+   "axial logistic balanced accuracy": 0.812,
+   "axial logistic macro-F1": 0.653,
+   "axial logistic accuracy": 0.822
+  }
+ },
+ "sd_across_repeats": {
+  "Combo": 0.041,
+  "DCombo": 0.02,
+  "M": 0.016,
+  "MM": 0.077
+ },
+ "chosen_per_fold": {
+  "Combo": {
+   "XGB": 10,
+   "axial+ratio": 3,
+   "axial": 2
+  },
+  "DCombo": {
+   "axial+ratio": 8,
+   "ordinal+ratio": 7,
+   "ordinal": 3,
+   "axial": 2
+  },
+  "M": {
+   "axial+ratio": 14,
+   "ratio": 5,
+   "axial": 1
+  },
+  "MM": {
+   "ratio": 13,
+   "axial+ratio": 4,
+   "axial": 3
+  }
+ },
+ "threshold_per_fold_MM": {
+  "f1_macro": 8,
+  "none": 7,
+  "balanced_accuracy": 5
+ },
+ "outer_folds": {
+  "Combo": 15,
+  "DCombo": 20,
+  "M": 20,
+  "MM": 20
+ }
+}

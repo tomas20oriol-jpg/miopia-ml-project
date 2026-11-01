@@ -42,8 +42,8 @@ Produce test labels "as accurate as possible", but "all the process to achieve t
 
 - [x] `01_eda` executed and merged
 - [x] `02` cleaning and feature engineering (executed; methodology and chart reviews done)
-- [ ] `03` baselines and validation scheme
-- [ ] `04` model comparison per target
+- [x] `03` baselines and validation scheme (executed; methodology and chart reviews done; PR not merged)
+- [ ] `04` model comparison per target (executed; methodology and chart reviews applied; not merged)
 - [ ] `05` final models, interpretation, **test labels**
 - [ ] Slides, including the mandatory final slides
 - [ ] Video

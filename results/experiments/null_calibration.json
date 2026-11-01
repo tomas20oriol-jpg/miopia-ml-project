@@ -1,0 +1,45 @@
+{
+ "runs_per_row": 200,
+ "comparisons": {
+  "M, axial + ratio vs axial": {
+   "real gain": 0.037,
+   "real test passes": true,
+   "shuffled cornea: pass rate": 0.03,
+   "shuffled cornea: 95th percentile of gain": 0.005,
+   "random noise: pass rate": 0.015,
+   "random noise: 95th percentile of gain": 0.008
+  },
+  "DCombo, axial + ratio vs axial": {
+   "real gain": 0.051,
+   "real test passes": true,
+   "shuffled cornea: pass rate": 0.07,
+   "shuffled cornea: 95th percentile of gain": 0.018,
+   "random noise: pass rate": 0.03,
+   "random noise: 95th percentile of gain": 0.013
+  },
+  "Combo, axial + ratio vs axial": {
+   "real gain": 0.026,
+   "real test passes": true,
+   "shuffled cornea: pass rate": 0.355,
+   "shuffled cornea: 95th percentile of gain": 0.024,
+   "random noise: pass rate": 0.305,
+   "random noise: 95th percentile of gain": 0.032
+  },
+  "MM, ratio vs axial": {
+   "real gain": 0.079,
+   "real test passes": true,
+   "shuffled cornea: pass rate": 0.165,
+   "shuffled cornea: 95th percentile of gain": 0.057,
+   "random noise: pass rate": 0.0,
+   "random noise: 95th percentile of gain": -0.159
+  },
+  "MM, ratio vs all 33": {
+   "real gain": 0.098,
+   "real test passes": true,
+   "shuffled cornea: pass rate": 0.025,
+   "shuffled cornea: 95th percentile of gain": 0.076,
+   "random noise: pass rate": 0.0,
+   "random noise: 95th percentile of gain": -0.139
+  }
+ }
+}

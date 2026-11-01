@@ -16,6 +16,8 @@ poetry install
 The virtualenv is created in `.venv/` (VS Code: *Python: Select Interpreter* → `.venv`).
 Run Jupyter with `poetry run jupyter lab` or pick the `.venv` kernel in VS Code.
 
+On macOS, XGBoost also needs the OpenMP runtime: `brew install libomp`.
+
 ## Data
 
 The CSVs contain student health data and are **not versioned** (see `.gitignore`).

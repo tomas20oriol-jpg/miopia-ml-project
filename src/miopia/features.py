@@ -189,6 +189,15 @@ def clean_features(X: pd.DataFrame) -> pd.DataFrame:
     return out[FEATURE_COLUMNS]
 
 
+def with_axial_corneal_ratio(X: pd.DataFrame) -> pd.DataFrame:
+    """Add axial length / corneal radius to clean features (stateless, row-wise).
+
+    The radius in mm comes from the keratometric conversion, radius = 337.5 / dioptres.
+    """
+    keratometry = X[["kerato_od", "kerato_od_axis2", "kerato_os", "kerato_os_axis2"]].mean(axis=1)
+    return X.assign(axial_corneal_ratio=X["axial_length"] / (337.5 / keratometry))
+
+
 def make_preprocessor(scale: bool = True) -> Pipeline:
     """Imputation (median) and optional standardisation, to be fitted inside CV folds.
 
