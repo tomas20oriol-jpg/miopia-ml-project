@@ -41,13 +41,14 @@ Status: `OPEN` (not decided) · `ASSUMED` (working default, please confirm) · `
 
 | # | Assumption | Status | Why it matters / how to settle it |
 |---|---|---|---|
-| C1 | How the work is split between Ana and Tomas. | OPEN | Mandatory final slides. Never invent it: the user fills `[TO FILL]` placeholders. |
+| C1 | The work was done together by Ana and Tomas, taking the decisions jointly (stated by Ana, 2026-11-01). Whether to state a 50/50 split on the final slide is still to be confirmed. | ASSUMED | Mandatory final slides. Never invent it: the user fills `[TO FILL]` placeholders. |
 | C2 | Who made `01_eda` and with how much AI help. | OPEN | Needed for the AI-usage slide (the first row of `docs/ai_usage.md` says "Not recorded"). |
 | C3 | The video is recorded by the user, 10 minutes, after the slides are final. | ASSUMED | Not something Claude can do. |
 | C4 | The zip does not include `data/` and may include `models/` only if the notebooks need saved models to run. | ASSUMED | The brief excludes train and test data. Prefer notebooks that retrain in minutes. |
 | C5 | The student data are confidential: not committed, not uploaded to any external service, no individual rows in outputs or slides. | ASSUMED | The brief does not say so; this is a conservative default for health data. |
 
 ## Change log
+- 2026-11-01: notebook 05 wrote `results/test_labels.txt` following A1 and A2. The test set was used once, to predict. `MM = SI` is predicted for 5 of 24 test students, above the training share; it is reported and not changed.
 - 2026-11-01: methodology review of notebook 04 applied. The threshold search now repeats its inner split 10 times, because one split made it unstable, and this moved the adopted option from balanced accuracy to macro-F1. The notebook reports a nested estimate of the optimism and how often the test passes for useless information; a pass on `Combo` is weak evidence by itself. The test itself was kept.
 - 2026-11-01: texts corrected after the consistency audit: B2, B9, B10, B12, B14 and C1 reworded, and the claim that the 8 cases cluster by exam date removed, because no notebook shows it.
 - 2026-11-01: notebook 04 settled B3 and B9 and ran the experiments of B15. Chosen models: logistic on axial length plus the axial/corneal ratio for `M` and `DCombo`, logistic on the ratio with a threshold tuned on macro-F1 for `MM`, random forest with the ratio for `Combo`. The 8 inconsistent students have flatter corneas and a lower ratio than `MM = SI`: a hypothesis in favour of B2, not a proof.

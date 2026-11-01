@@ -65,9 +65,13 @@ Follow [Friends Don't Let Friends](https://github.com/cxli233/FriendsDontLetFrie
 - Chosen models (B14, B15): logistic on axial length plus the axial/corneal ratio for `M` and `DCombo`; logistic on the ratio alone, with a threshold tuned on macro-F1 inside the training data, for `MM`; random forest on the 33 features plus the ratio for `Combo`, with phototype filled with the median (B9). Separate models, contradictions reported, not forced (B3). `final_model` in `miopia.models` defines them for notebook 05. Section 11 of notebook 04 shows the scores are optimistic, using the scripts in `miopia.experiments`. The ratio comes from `with_axial_corneal_ratio` in `miopia.features`.
 - Candidates are in `miopia.models`. XGBoost needs OpenMP: on macOS, `brew install libomp` (see README).
 
+## Decisions so far (05, executed)
+
+- `05_final_models.ipynb` fits `final_model` on all training students and writes `results/test_labels.txt`. The test set is used only there, to predict; no label is changed after seeing it, including the high share of `MM = SI` (5 of 24), which is reported as a risk.
+
 ## Plan
 
-`01` EDA (done) → `02` cleaning + feature engineering (done) → `03` baselines + validation scheme (executed, reviews applied) → `04` model comparison per target (incl. at least one model not seen in class, explained; executed) → `05` final models, interpretation (permutation importance / SHAP), error analysis, **test labels** → slides, video, zip.
+`01` EDA (done) → `02` cleaning + feature engineering (done) → `03` baselines + validation scheme (executed, reviews applied) → `04` model comparison per target (incl. at least one model not seen in class, explained; executed) → `05` (executed) final models, interpretation (permutation importance / SHAP), error analysis, **test labels** → slides, video, zip.
 
 ## Agents (`.claude/agents/`)
 

@@ -44,7 +44,7 @@ Produce test labels "as accurate as possible", but "all the process to achieve t
 - [x] `02` cleaning and feature engineering (executed; methodology and chart reviews done)
 - [x] `03` baselines and validation scheme (executed; methodology and chart reviews done; PR not merged)
 - [ ] `04` model comparison per target (executed; methodology and chart reviews applied; not merged)
-- [ ] `05` final models, interpretation, **test labels**
+- [x] `05` final models, interpretation, **test labels** (executed; no AI review yet; not merged)
 - [ ] Slides, including the mandatory final slides
 - [ ] Video
 - [ ] Zip built and `deliverables-checker` clean
