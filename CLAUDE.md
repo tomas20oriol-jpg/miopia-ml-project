@@ -22,8 +22,8 @@ Everything the brief leaves open is tracked, with a status, in @docs/assumptions
 
 ## Environment
 
-- Poetry, venv in `.venv/` (`poetry.toml`). Python 3.12. Add packages with `poetry add` (commit `pyproject.toml` + `poetry.lock`), never pip. `pytest` is **not installed yet**: `poetry add --group dev pytest` before writing tests.
-- Notebook kernel: `python3` of `.venv`. Run from `notebooks/` with `../.venv/bin/jupyter nbconvert --to notebook --execute --inplace <nb>.ipynb`.
+- Poetry, venv in `.venv/` (`poetry.toml`). Python 3.12. Add packages with `poetry add` (commit `pyproject.toml` + `poetry.lock`), never pip. `pytest` is declared in the dev group, but it may be missing from a given venv (`poetry install` adds it).
+- Notebook kernel: `python3` of `.venv` (on Ana's machine the venv is one folder above the repo). Run from `notebooks/` with `../.venv/bin/jupyter nbconvert --to notebook --execute --inplace <nb>.ipynb`.
 - Paths and seed: `src/miopia/config.py`. Loader: `miopia.data.load_raw()` returns `X_train, Y_train, X_test` untouched.
 - Features: `miopia.features` (`clean_features` is row-wise and stateless; `make_preprocessor` learns medians/scaling and must be the first step of every model pipeline; `COLUMN_DECISIONS` documents every raw column). Figures: `miopia.plotting` (`set_style`, `save_fig`, `CLASS_COLORS[task][class]`, `CLASS_MARKERS`). Tests: `.venv/bin/python -m pytest`.
 - New notebooks start from `docs/templates/notebook_template.ipynb`.
@@ -45,7 +45,7 @@ Follow [Friends Don't Let Friends](https://github.com/cxli233/FriendsDontLetFrie
 - Drop: `hº act.cerca sem` (100% empty), `fecha`, `Grupo fot` (almost constant). Cast all numeric columns to float.
 - `fototipo` holds `E`/`L` (values of `Grupo fot`) in 38 rows: keep numeric 1-5, others become missing and are imputed (inside the pipeline).
 - Redundant eye columns (OD/OS/mean/total): keep one representative per group. Ancestry free text becomes a "foreign ancestors" flag. `familiar miope` becomes one binary column per relative.
-- 8 students have `Combo = MM` but `MM = NO`, with the axial length of true myopia magna. **To be confirmed with the teammate:** train each task on its own column as provided, and test the label correction as an extra experiment.
+- 8 students have `Combo = MM` but `MM = NO`, with the axial length of the `MM = SI` group but flatter corneas (notebook 04, section 8). **Decided (B2):** train each task on its own column as provided; the label correction is only a separate experiment in notebook 03, not adopted.
 - Axial length (`LA`) is the dominant predictor. Train and test look like the same population, but with 24 test rows the check has little power.
 
 ## Decisions so far (02, done)
@@ -54,9 +54,24 @@ Follow [Friends Don't Let Friends](https://github.com/cxli233/FriendsDontLetFrie
 - `phototype` is 45 % missing (the letters in `fototipo` are `Grupo fot` values): kept for now, decision B9 happens inside CV.
 - `fecha` and `pat. Ret. Miop magna` are not used (B10, and a consequence of the target).
 
+## Decisions so far (03, executed, reviews applied)
+
+- Validation code is in `miopia.validation`: repeated stratified 5-fold x 10; `evaluate` fits on one label set and scores against another.
+- `MM` is trained on its column as provided (B2). In the experiment, corrected labels raised balanced accuracy and lowered accuracy and macro-F1.
+- Logistic on axial length alone matches all 33 features on balanced accuracy: notebook 04 must beat the better logistic baseline (B12, extended by route B in B14). If balanced accuracy and macro-F1 disagree, accuracy decides and the report says so (B13).
+
+## Decisions so far (04, executed, reviews applied)
+
+- Chosen models (B14, B15): logistic on axial length plus the axial/corneal ratio for `M` and `DCombo`; logistic on the ratio alone, with a threshold tuned on macro-F1 inside the training data, for `MM`; random forest on the 33 features plus the ratio for `Combo`, with phototype filled with the median (B9). Separate models, contradictions reported, not forced (B3). `final_model` in `miopia.models` defines them for notebook 05. Section 11 of notebook 04 shows the scores are optimistic, using the scripts in `miopia.experiments`. The ratio comes from `with_axial_corneal_ratio` in `miopia.features`.
+- Candidates are in `miopia.models`. XGBoost needs OpenMP: on macOS, `brew install libomp` (see README).
+
+## Decisions so far (05, executed)
+
+- `05_final_models.ipynb` fits `final_model` on all training students and writes `results/test_labels.txt`. The test set is used only there, to predict; no label is changed after seeing it, including the high share of `MM = SI` (5 of 24), which is reported as a risk.
+
 ## Plan
 
-`01` EDA (done) → `02` cleaning + feature engineering (done) → `03` baselines + validation scheme → `04` model comparison per target (incl. at least one model not seen in class, explained) → `05` final models, interpretation (permutation importance / SHAP), error analysis, **test labels** → slides, video, zip.
+`01` EDA (done) → `02` cleaning + feature engineering (done) → `03` baselines + validation scheme (executed, reviews applied) → `04` model comparison per target (incl. at least one model not seen in class, explained; executed) → `05` (executed) final models, interpretation (permutation importance / SHAP), error analysis, **test labels** → slides, video, zip.
 
 ## Agents (`.claude/agents/`)
 
