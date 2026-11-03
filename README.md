@@ -11,14 +11,16 @@ The final labels are in `results/test_labels.txt`. The notebooks are delivered a
 2. Install the dependencies with `poetry install`. The virtualenv is created in `.venv/`; select it as the notebook kernel.
 3. On macOS, XGBoost also needs the OpenMP runtime: `brew install libomp`.
 4. The CSVs contain student health data and are not included. Copy `X_train.csv`, `Y_train.csv` and `X_test.csv` into `data/raw/`.
-5. Run the notebooks in order, from `notebooks/`: `01_eda`, `02_cleaning_features`, `03_baselines_validation`, `04_model_comparison`, `05_final_models`.
+5. Run the notebooks in order, from `notebooks/`: `01_eda`, `02_cleaning_features`, `03_baselines_validation`, `04_model_comparison`, `05_final_models`. Notebook 04 runs thousands of cross-validation fits and can take an hour or more; notebook 05 takes a few minutes.
 
 Notebooks 04 and 05 read two sets of saved aggregates from `results/experiments/`, because they take several minutes to compute. To regenerate them:
 
 ```bash
-python -m miopia.experiments.nested_protocol
-python -m miopia.experiments.null_calibration
+poetry run python -m miopia.experiments.nested_protocol
+poetry run python -m miopia.experiments.null_calibration
 ```
+
+**Reproducibility.** Every model uses a fixed seed, so a run gives the same numbers on the same machine with the versions in `poetry.lock`. Install with `poetry install`, not `pip install -e .`, which ignores the lock. With other library versions or another processor, the XGBoost scores move in the second decimal; in notebook 04 this can make the random forest rather than XGBoost come first in the first `Combo` round, since the two are level. The final models and `results/test_labels.txt` do not change.
 
 ## Layout
 

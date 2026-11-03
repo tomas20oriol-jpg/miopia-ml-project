@@ -28,8 +28,8 @@ def save(fig, name):
 
 # Balanced accuracy of each model (notebook 04, section 4)
 MODELS = ["Logistic\naxial only", "Logistic\nall 33", "Logistic\ntuned", "SVM", "Random\nforest", "XGBoost"]
-SCORES = {"M": [0.77, 0.77, 0.75, 0.71, 0.73, 0.73], "MM": [0.81, 0.79, 0.77, 0.75, 0.61, 0.65],
-          "Combo": [0.71, 0.68, 0.65, 0.66, 0.73, 0.71], "DCombo": [0.60, 0.51, 0.49, 0.49, 0.59, 0.55]}
+SCORES = {"M": [0.77, 0.77, 0.75, 0.71, 0.73, 0.74], "MM": [0.81, 0.79, 0.77, 0.75, 0.61, 0.68],
+          "Combo": [0.71, 0.68, 0.65, 0.66, 0.73, 0.73], "DCombo": [0.60, 0.51, 0.49, 0.49, 0.59, 0.56]}
 MAJORITY_BA = {"M": 0.5, "MM": 0.5, "Combo": 0.33, "DCombo": 0.25}
 fig, axes = plt.subplots(1, 4, figsize=(13, 4.8), sharey=True, sharex=True)
 for ax, target in zip(axes, TARGETS):
@@ -119,7 +119,7 @@ ax.set_title("DCombo, validation students", fontweight="bold")
 ax.spines[:].set_visible(False)
 save(fig, "dcombo_errors")
 
-IMPORTANCE = {"Axial length": 0.296, "Axial/corneal ratio": 0.129, "Nasal SD": 0.007, "Sport hours": 0.005, "Mother myopic": 0.003}
+IMPORTANCE = {"Axial length": 0.297, "Axial/corneal ratio": 0.131, "Study hours": 0.005, "Nasal SD": 0.005, "CUVAF SD": 0.003}
 fig, ax = plt.subplots(figsize=(6.4, 3.0))
 y = np.arange(len(IMPORTANCE))
 values = list(IMPORTANCE.values())

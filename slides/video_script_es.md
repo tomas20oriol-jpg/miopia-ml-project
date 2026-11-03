@@ -14,7 +14,7 @@ Hola, somos Ana y Tomás. En este proyecto intentamos predecir la miopía en est
 
 **Ana** (about 24 s)
 
-Esta es la charla en tres ideas. Primera: los modelos complejos rara vez superan a una regresión logística simple con una sola medida, la longitud del ojo. Segunda: un cociente de la literatura médica ayudó más que añadir complejidad. Y tercera: medimos lo optimistas que son nuestras puntuaciones, y parte de la mejora no supera esa comprobación.
+Esta es la charla en tres ideas. Primera: los modelos complejos rara vez superan a una regresión logística simple con una sola medida, la longitud del ojo. Segunda: un cociente de la literatura médica dio un modelo nuevo que pasó nuestra prueba en todos los objetivos, aunque no probamos los modelos complejos con él. Y tercera: medimos lo optimistas que son nuestras puntuaciones, y parte de la mejora no supera esa comprobación.
 
 ## Slide 3: One dataset, four questions about myopia
 
@@ -38,7 +38,7 @@ Con tan pocos datos, lo que más importa es el método. Repetimos diez veces una
 
 **Tomás** (about 31 s)
 
-Comparamos regresión logística, un SVM, un bosque aleatorio y XGBoost, que no vimos en clase. XGBoost construye árboles pequeños uno tras otro, y cada uno corrige los errores de los anteriores. En naranja está la regresión logística solo con la longitud axial. En balanced accuracy es muy difícil de superar. Solo el bosque aleatorio en Combo queda claramente por encima, y XGBoost nunca sale primero. Con 132 estudiantes, más complejidad sobre todo añadió ruido.
+Comparamos regresión logística, un SVM, un bosque aleatorio y XGBoost, que no vimos en clase. XGBoost construye árboles pequeños uno tras otro, y cada uno corrige los errores de los anteriores. El punto grande rojo anaranjado es la regresión logística solo con la longitud axial. En balanced accuracy es muy difícil de superar. Solo en Combo quedan claramente por encima el bosque aleatorio y XGBoost, empatados entre sí. Con 132 estudiantes, más complejidad sobre todo añadió ruido.
 
 ## Slide 7: Medicine gave us a better measurement
 
@@ -68,7 +68,7 @@ El cociente también aporta algo sobre los 8 estudiantes que se contradicen. Tie
 
 **Ana** (about 47 s)
 
-Esta es la parte que más valoramos. Elegimos estos modelos con los mismos estudiantes que los puntúan, después de 42 pruebas de selección. Así que repetimos una aproximación de toda la selección dentro de los bloques. La mejora se mantiene en M, casi desaparece en MM para la balanced accuracy, y desaparece en DCombo. También dimos información inútil a nuestra prueba. En Combo la sigue pasando aproximadamente una de cada tres veces, así que la elección de modelo ahí tiene poco respaldo. En M, MM y DCombo, la mejora real de la córnea supera a la de una córnea barajada. Así que la córnea parece aportar información real, pero las mejoras exactas son inciertas.
+Esta es la parte que más valoramos. Elegimos estos modelos con los mismos estudiantes que los puntúan, después de 42 pruebas de selección. Así que repetimos una aproximación de toda la selección dentro de los bloques. La mejora se mantiene en M, casi desaparece en MM para la balanced accuracy, y desaparece en DCombo. En Combo, al repetir la selección nunca salió el bosque que elegimos, y quedó por debajo de la longitud axial sola. También dimos información inútil a nuestra prueba. En Combo la sigue pasando aproximadamente una de cada tres veces, así que la elección de modelo ahí tiene poco respaldo. En M, MM y DCombo, la mejora real de la córnea supera a la de una córnea barajada. Así que la córnea parece aportar información real, pero las mejoras exactas son inciertas.
 
 ## Slide 12: Two features drive the models; errors stay close
 
@@ -80,13 +80,13 @@ Esta es la parte que más valoramos. Elegimos estos modelos con los mismos estud
 
 **Ana** (about 39 s)
 
-Esto es lo que esperamos en el test, antes de que se corrija. Con 24 estudiantes, solo el azar mueve el resultado cuatro o cinco alumnos, así que son rangos, no promesas. En M, Combo y DCombo, las dos estimaciones están por encima de la clase mayoritaria. En MM, van de quedar más o menos igual a superarla. Un riesgo: nuestro modelo dice miopía magna en 5 de los 24 estudiantes de test, frente al 8 por ciento en entrenamiento. Es compatible con el azar, y no lo cambiamos, porque sería elegir con el test.
+Esto es lo que esperamos en el test, antes de que se corrija. Con 24 estudiantes, solo el azar mueve el resultado cuatro o cinco alumnos, así que son rangos, no promesas. En M, Combo y DCombo, las dos estimaciones están por encima de la clase mayoritaria. En MM, van de quedar más o menos igual a superarla. Un riesgo: nuestro modelo dice miopía magna en 5 de los 24 estudiantes de test, frente al 8 por ciento en entrenamiento. Es compatible con el azar, y no lo cambiamos, porque sería elegir con el test. Además, 3 de los 24 estudiantes reciben etiquetas que se contradicen entre objetivos, por ejemplo sin miopía en M pero con miopía en Combo. Las dejamos como salieron.
 
 ## Slide 14: What we take away
 
 **Tomás** (about 22 s)
 
-Para terminar, tres ideas. En nuestras comparaciones, conocer el problema ayudó más que añadir complejidad. Medir nuestras propias dudas forma parte del resultado, no es un extra. Y el límite está en parte en los datos: más estudiantes y una medida directa de la refracción probablemente ayudarían más que otro modelo. Gracias.
+Para terminar, tres ideas. En nuestras comparaciones, conocer el problema dio mejoras que la complejidad no dio, aunque no probamos los modelos complejos con el cociente, y la mejora que resiste nuestra comprobación anidada es clara sobre todo en M. Medir nuestras propias dudas forma parte del resultado, no es un extra. Y el límite está en parte en los datos: más estudiantes y una medida directa de la refracción probablemente ayudarían más que otro modelo. Gracias.
 
 ## Slide 15: Team and tools
 

@@ -6,7 +6,7 @@ Ana: Hello, we are Ana and Tomás. In this project we tried to predict myopia in
 
 ## Slide 2: The talk in three ideas
 
-Ana: Here is the talk in three ideas. First, complex models rarely beat a simple logistic regression on one measurement, the length of the eye. Second, a ratio from the medical literature helped more than adding complexity. And third, we measured how optimistic our own scores are, and part of the gain does not survive that check.
+Ana: Here is the talk in three ideas. First, complex models rarely beat a simple logistic regression on one measurement, the length of the eye. Second, a ratio from the medical literature gave a new model that passed our test on every target, although we did not try the complex models with it. And third, we measured how optimistic our own scores are, and part of the gain does not survive that check.
 
 ## Slide 3: One dataset, four questions about myopia
 
@@ -22,7 +22,7 @@ Ana: With so little data, the method matters most. We repeat stratified five-fol
 
 ## Slide 6: Complex models rarely beat a one-feature baseline
 
-Tomás: We compared logistic regression, an SVM, a random forest and XGBoost, which we did not see in class. XGBoost builds small trees one after another, each one correcting the errors of the previous ones. In orange is logistic regression on axial length alone. On balanced accuracy it is very hard to beat. Only the random forest on Combo is clearly higher, and XGBoost never comes first. With 132 students, more complexity mostly added noise.
+Tomás: We compared logistic regression, an SVM, a random forest and XGBoost, which we did not see in class. XGBoost builds small trees one after another, each one correcting the errors of the previous ones. The large red-orange dot is logistic regression on axial length alone. On balanced accuracy it is very hard to beat. Only on Combo are the random forest and XGBoost clearly higher, and they are level with each other. With 132 students, more complexity mostly added noise.
 
 ## Slide 7: Medicine gave us a better measurement
 
@@ -42,7 +42,7 @@ Tomás: The ratio also sheds light on the 8 students who contradict themselves. 
 
 ## Slide 11: We measured how optimistic our scores are
 
-Ana: This is the part we value most. We chose these models with the same students who score them, after 42 selection tests. So we repeated an approximation of the whole selection inside the folds. The gain stays on M, nearly disappears on MM for balanced accuracy, and disappears on DCombo. We also gave our test useless information. On Combo it still passes about one time in three, so the choice of model there is weakly supported. On M, MM and DCombo, the real gain from the cornea is above what a shuffled cornea gives. So the cornea seems to carry real information, but the exact gains are uncertain.
+Ana: This is the part we value most. We chose these models with the same students who score them, after 42 selection tests. So we repeated an approximation of the whole selection inside the folds. The gain stays on M, nearly disappears on MM for balanced accuracy, and disappears on DCombo. On Combo, repeating the selection never picked the forest we chose, and scored below axial length alone. We also gave our test useless information. On Combo it still passes about one time in three, so the choice of model there is weakly supported. On M, MM and DCombo, the real gain from the cornea is above what a shuffled cornea gives. So the cornea seems to carry real information, but the exact gains are uncertain.
 
 ## Slide 12: Two features drive the models; errors stay close
 
@@ -50,11 +50,11 @@ Ana: What do the models use? Almost only axial length and the ratio, even the ra
 
 ## Slide 13: What we expect on the test set
 
-Ana: This is what we expect on the test set, before it is graded. With 24 students, sampling alone moves a score by four or five students, so these are ranges and not promises. On M, Combo and DCombo, both estimates are above the majority class. On MM, they go from about level with it to above it. One risk: our model says myopia magna for 5 of the 24 test students, against 8 percent in training. That is compatible with chance, and we did not change it, because that would be choosing with the test set.
+Ana: This is what we expect on the test set, before it is graded. With 24 students, sampling alone moves a score by four or five students, so these are ranges and not promises. On M, Combo and DCombo, both estimates are above the majority class. On MM, they go from about level with it to above it. One risk: our model says myopia magna for 5 of the 24 test students, against 8 percent in training. That is compatible with chance, and we did not change it, because that would be choosing with the test set. Also, 3 of the 24 students get labels that contradict each other across targets, for example no myopia in M but myopia in Combo. We left them as predicted.
 
 ## Slide 14: What we take away
 
-Tomás: To conclude, three ideas. In our comparisons, knowing the problem helped more than adding complexity. Measuring our own doubt is part of the result, and not an extra. And the limit is partly the data: more students and a direct measure of refraction would likely help more than another model. Thank you.
+Tomás: To conclude, three ideas. In our comparisons, knowing the problem gave gains that added complexity did not, although we did not try the complex models with the ratio, and the gain that survives our nested check is clearest on M. Measuring our own doubt is part of the result, and not an extra. And the limit is partly the data: more students and a direct measure of refraction would likely help more than another model. Thank you.
 
 ## Slide 15: Team and tools
 

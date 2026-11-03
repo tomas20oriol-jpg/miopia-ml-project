@@ -2,8 +2,9 @@
 
 Run with `python -m miopia.experiments.nested_protocol`. It takes several minutes, so notebook 04 reads the
 saved aggregates from `results/experiments/nested_protocol.json`. This is an approximation of the protocol:
-SVM and tuned logistic regression are left out, and the random forest and XGBoost use fixed settings.
-The test set is not read.
+SVM, tuned logistic regression and the phototype variants are left out, and the random forest and XGBoost use
+fixed settings and are candidates only for Combo (they lost on the other targets in notebook 04, a pruning
+that used all training students). The test set is not read.
 """
 
 import json
