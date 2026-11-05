@@ -2,8 +2,8 @@
 
 Run with `python -m miopia.experiments.nested_protocol`. It takes several minutes, so notebook 04 reads the
 saved aggregates from `results/experiments/nested_protocol.json`. This is an approximation of the protocol:
-SVM, tuned logistic regression and the phototype variants are left out, and the random forest and XGBoost use
-fixed settings and are candidates only for Combo (they lost on the other targets in notebook 04, a pruning
+SVM, tuned logistic regression and the ancestry variants are left out, and the random forest and XGBoost use
+fixed settings and are candidates only for MM and Combo (they lost on M and DCombo in notebook 04, a pruning
 that used all training students). The test set is not read.
 """
 
@@ -20,7 +20,7 @@ from miopia.config import RANDOM_STATE, RESULTS
 from miopia.data import load_raw
 from miopia.features import make_preprocessor, clean_features, with_axial_corneal_ratio
 from miopia.models import BalancedXGBClassifier, ordinal_model, with_tuned_threshold
-from miopia.validation import evaluate, logistic_baseline, make_strata, selection_test
+from miopia.validation import correct_mm_labels, evaluate, logistic_baseline, make_strata, selection_test
 
 SECOND_SEED = RANDOM_STATE + 1
 OUTER_SEED = 7
@@ -39,17 +39,17 @@ def boosting():
 
 
 def build_catalog(features):
-    return {"axial": (logistic_baseline, AXIAL), "all33": (logistic_baseline, features), "RF": (forest, features),
+    return {"axial": (logistic_baseline, AXIAL), "all32": (logistic_baseline, features), "RF": (forest, features),
             "XGB": (boosting, features), "ratio": (logistic_baseline, [RATIO]),
-            "axial+ratio": (logistic_baseline, AXIAL + [RATIO]), "all33+ratio": (logistic_baseline, features + [RATIO]),
+            "axial+ratio": (logistic_baseline, AXIAL + [RATIO]), "all32+ratio": (logistic_baseline, features + [RATIO]),
             "RF+ratio": (forest, features + [RATIO]), "ordinal": (ordinal_model, AXIAL),
             "ordinal+ratio": (ordinal_model, AXIAL + [RATIO])}
 
 
-FIRST_ROUND = {"M": ["all33"], "MM": ["all33"], "Combo": ["all33", "RF", "XGB"], "DCombo": ["all33"]}
-SECOND_ROUND = {"M": ["ratio", "axial+ratio"], "MM": ["ratio", "axial+ratio", "all33+ratio"],
+FIRST_ROUND = {"M": ["all32"], "MM": ["all32", "RF", "XGB"], "Combo": ["all32", "RF", "XGB"], "DCombo": ["all32"]}
+SECOND_ROUND = {"M": ["ratio", "axial+ratio"], "MM": ["ratio", "axial+ratio", "all32+ratio"],
                 "Combo": ["ratio", "axial+ratio", "RF+ratio"], "DCombo": ["ratio", "axial+ratio", "ordinal", "ordinal+ratio"]}
-FIXED_CHOICE = {"M": ("axial+ratio", None), "MM": ("ratio", "f1_macro"), "Combo": ("RF+ratio", None), "DCombo": ("axial+ratio", None)}
+FIXED_CHOICE = {"M": ("axial+ratio", None), "MM": ("XGB", None), "Combo": ("RF+ratio", None), "DCombo": ("axial+ratio", None)}
 
 
 def run_protocol(target, X, Y, catalog):
@@ -70,7 +70,7 @@ def run_protocol(target, X, Y, catalog):
                 return pick
         return current
 
-    scores = {n: score(n) for n in ["axial", "all33"]}
+    scores = {n: score(n) for n in ["axial", "all32"]}
     reference = max(scores, key=lambda n: scores[n]["balanced_accuracy"].mean())
     current = advance(reference, [n for n in FIRST_ROUND[target] + ["axial"] if n != reference], scores)
     current = advance(current, [n for n in SECOND_ROUND[target] if n != current], scores)
@@ -109,7 +109,8 @@ def score_fold(target, repeat, train, val, X, Y, catalog):
 
 
 def main():
-    X_raw, Y, _ = load_raw()
+    X_raw, Y_provided, _ = load_raw()
+    Y = correct_mm_labels(Y_provided)     # decision B2
     clean = clean_features(X_raw)
     X = with_axial_corneal_ratio(clean)
     catalog = build_catalog(list(clean.columns))

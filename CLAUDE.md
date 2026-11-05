@@ -43,26 +43,26 @@ Follow [Friends Don't Let Friends](https://github.com/cxli233/FriendsDontLetFrie
 
 - Labels are written `SI`/`NO`, not YES/NO as in the brief. Keep the original spelling in the final `.txt`.
 - Drop: `hº act.cerca sem` (100% empty), `fecha`, `Grupo fot` (almost constant). Cast all numeric columns to float.
-- `fototipo` holds `E`/`L` (values of `Grupo fot`) in 38 rows: keep numeric 1-5, others become missing and are imputed (inside the pipeline).
+- `fototipo` holds `E`/`L` (values of `Grupo fot`) in 38 rows, a data-entry mix-up. **Changed 2026-11-03 (B9):** phototype is dropped as a feature.
 - Redundant eye columns (OD/OS/mean/total): keep one representative per group. Ancestry free text becomes a "foreign ancestors" flag. `familiar miope` becomes one binary column per relative.
-- 8 students have `Combo = MM` but `MM = NO`, with the axial length of the `MM = SI` group but flatter corneas (notebook 04, section 8). **Decided (B2):** train each task on its own column as provided; the label correction is only a separate experiment in notebook 03, not adopted.
+- 8 students have `Combo = MM` but `MM = NO`, with the axial length of the `MM = SI` group but flatter corneas (notebook 04, section 8). **Changed 2026-11-03 (B2):** the 8 are corrected to `MM = SI` (`correct_mm_labels`) for notebooks 04, 05 and the experiment scripts; notebook 03 keeps the comparison.
 - Axial length (`LA`) is the dominant predictor. Train and test look like the same population, but with 24 test rows the check has little power.
 
 ## Decisions so far (02, done)
 
-- 49 raw columns become 33 numeric features (20 dropped: 1 empty, 12 exact or almost exact combinations, 7 judgement calls, all justified in `COLUMN_DECISIONS` and notebook 02). The standardised matrix has full rank.
-- `phototype` is 45 % missing (the letters in `fototipo` are `Grupo fot` values): kept for now, decision B9 happens inside CV.
+- 49 raw columns become 32 numeric features (21 dropped: 1 empty, 12 exact or almost exact combinations, 7 judgement calls, and `fototipo`, all justified in `COLUMN_DECISIONS` and notebook 02). No feature has missing values. The standardised matrix has full rank.
+- `phototype` is 45 % missing (the letters in `fototipo` are `Grupo fot` values): dropped (B9). `foreign_ancestors` reads an empty entry as 0; keep, drop or flag is compared inside CV (B17).
 - `fecha` and `pat. Ret. Miop magna` are not used (B10, and a consequence of the target).
 
 ## Decisions so far (03, executed, reviews applied)
 
 - Validation code is in `miopia.validation`: repeated stratified 5-fold x 10; `evaluate` fits on one label set and scores against another.
-- `MM` is trained on its column as provided (B2). In the experiment, corrected labels raised balanced accuracy and lowered accuracy and macro-F1.
-- Logistic on axial length alone matches all 33 features on balanced accuracy: notebook 04 must beat the better logistic baseline (B12, extended by route B in B14). If balanced accuracy and macro-F1 disagree, accuracy decides and the report says so (B13).
+- `MM` is trained on the corrected labels from notebook 04 on (B2). In the notebook 03 experiment, scored against the original labels, the correction raised balanced accuracy and lowered accuracy and macro-F1.
+- Logistic on axial length alone matches all 32 features on balanced accuracy: notebook 04 must beat the better logistic baseline (B12, extended by route B in B14). If balanced accuracy and macro-F1 disagree, accuracy decides and the report says so (B13).
 
 ## Decisions so far (04, executed, reviews applied)
 
-- Chosen models (B14, B15): logistic on axial length plus the axial/corneal ratio for `M` and `DCombo`; logistic on the ratio alone, with a threshold tuned on macro-F1 inside the training data, for `MM`; random forest on the 33 features plus the ratio for `Combo`, with phototype filled with the median (B9). Separate models, contradictions reported, not forced (B3). `final_model` in `miopia.models` defines them for notebook 05. Section 11 of notebook 04 shows the scores are optimistic, using the scripts in `miopia.experiments`. The ratio comes from `with_axial_corneal_ratio` in `miopia.features`.
+- Chosen models (B14, B15): logistic on axial length plus the axial/corneal ratio for `M` and `DCombo`; XGBoost on the 32 features at threshold 0.5 for `MM` (the ratio and the tuned thresholds did not pass); random forest on the 32 features plus the ratio for `Combo`. Separate models, contradictions reported, not forced (B3). `final_model` in `miopia.models` defines them for notebook 05. Section 11 of notebook 04 shows the scores are optimistic, using the scripts in `miopia.experiments`. The ratio comes from `with_axial_corneal_ratio` in `miopia.features`.
 - Candidates are in `miopia.models`. XGBoost needs OpenMP: on macOS, `brew install libomp` (see README).
 
 ## Decisions so far (05, executed)

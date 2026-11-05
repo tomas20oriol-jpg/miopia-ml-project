@@ -1,12 +1,12 @@
 {
  "means": {
   "Combo": {
-   "whole protocol balanced accuracy": 0.701,
-   "whole protocol macro-F1": 0.692,
-   "whole protocol accuracy": 0.677,
-   "fixed choice balanced accuracy": 0.731,
-   "fixed choice macro-F1": 0.732,
-   "fixed choice accuracy": 0.725,
+   "whole protocol balanced accuracy": 0.703,
+   "whole protocol macro-F1": 0.696,
+   "whole protocol accuracy": 0.682,
+   "fixed choice balanced accuracy": 0.758,
+   "fixed choice macro-F1": 0.765,
+   "fixed choice accuracy": 0.756,
    "axial logistic balanced accuracy": 0.713,
    "axial logistic macro-F1": 0.664,
    "axial logistic accuracy": 0.654
@@ -34,22 +34,22 @@
    "axial logistic accuracy": 0.773
   },
   "MM": {
-   "whole protocol balanced accuracy": 0.817,
-   "whole protocol macro-F1": 0.774,
-   "whole protocol accuracy": 0.916,
-   "fixed choice balanced accuracy": 0.888,
-   "fixed choice macro-F1": 0.871,
-   "fixed choice accuracy": 0.962,
-   "axial logistic balanced accuracy": 0.812,
-   "axial logistic macro-F1": 0.653,
-   "axial logistic accuracy": 0.822
+   "whole protocol balanced accuracy": 0.912,
+   "whole protocol macro-F1": 0.926,
+   "whole protocol accuracy": 0.966,
+   "fixed choice balanced accuracy": 0.912,
+   "fixed choice macro-F1": 0.926,
+   "fixed choice accuracy": 0.966,
+   "axial logistic balanced accuracy": 0.887,
+   "axial logistic macro-F1": 0.805,
+   "axial logistic accuracy": 0.883
   }
  },
  "sd_across_repeats": {
-  "Combo": 0.041,
+  "Combo": 0.038,
   "DCombo": 0.02,
   "M": 0.016,
-  "MM": 0.077
+  "MM": 0.006
  },
  "chosen_per_fold": {
   "Combo": {
@@ -69,15 +69,11 @@
    "axial": 1
   },
   "MM": {
-   "ratio": 13,
-   "axial+ratio": 4,
-   "axial": 3
+   "XGB": 20
   }
  },
  "threshold_per_fold_MM": {
-  "f1_macro": 8,
-  "none": 7,
-  "balanced_accuracy": 5
+  "none": 20
  },
  "outer_folds": {
   "Combo": 15,

@@ -1,101 +1,124 @@
 # Guion del vídeo (español)
 
-El reparto entre vosotros es solo una sugerencia. Decidlo con vuestras palabras siempre que podáis.
-Total: 1274 words, about 8.8 minutes at 145 words per minute.
-
+Sigue las 20 diapositivas de la presentación de Canva. El reparto entre ponentes es solo una sugerencia.
+Total: 1212 words, about 9.3 minutes at 130 words per minute.
 
 ## Slide 1: Predicting myopia in medical students
 
 **Ana** (about 16 s)
 
-Hola, somos Ana y Tomás. En este proyecto intentamos predecir la miopía en estudiantes de tercero de Medicina. Con solo 132 estudiantes, la pregunta interesante no era solo qué modelo gana, sino cuánto podemos confiar en el resultado.
+Hola, somos Ana y Tomás. Hemos intentado predecir la miopía en estudiantes de tercero de Medicina. Con solo 132 estudiantes, la pregunta no es solo qué modelo gana, sino cuánto podemos fiarnos del resultado.
 
-## Slide 2: The talk in three ideas
+## Slide 2: Index
 
-**Ana** (about 24 s)
+**Ana** (about 16 s)
 
-Esta es la charla en tres ideas. Primera: los modelos complejos rara vez superan a una regresión logística simple con una sola medida, la longitud del ojo. Segunda: un cociente de la literatura médica dio un modelo nuevo que pasó nuestra prueba en todos los objetivos, aunque no probamos los modelos complejos con él. Y tercera: medimos lo optimistas que son nuestras puntuaciones, y parte de la mejora no supera esa comprobación.
+Empezamos por el problema y los datos, seguimos con cómo los preparamos y elegimos los modelos, cómo usamos la IA, los resultados y cuánto fiarnos de ellos, y terminamos con las conclusiones y el equipo.
 
-## Slide 3: One dataset, four questions about myopia
+## Slide 3: Four targets, 24 test students
 
-**Ana** (about 26 s)
+**Ana** (about 32 s)
 
-Los datos son de estudiantes de la Universidad de Navarra, y el enunciado pide cuatro predicciones. Si un estudiante tiene miopía. Si tiene miopía magna, es decir, más de seis dioptrías. Combo, que une ambas con una clase de control. Y DCombo, que además divide la miopía en dos tipos. Tenemos que generar etiquetas para 24 estudiantes de test cuyas respuestas no conocemos.
+El enunciado pide cuatro predicciones por estudiante: si tiene miopía; si tiene miopía magna, es decir, más de seis dioptrías; Combo, que separa control, miopía y magna; y DCombo, que además divide la miopía en M1 y M2. La miopía magna es la que más importa, porque puede causar enfermedad de retina, y también es la clase más rara. Entregamos etiquetas para 24 estudiantes de test cuyas respuestas no tenemos.
 
-## Slide 4: Few students, few cases, and messy columns
+## Slide 4: Data overview
 
-**Ana** (about 41 s)
+**Tomás** (about 33 s)
 
-La principal dificultad es el tamaño. Hay 132 estudiantes de entrenamiento y solo 10 tienen miopía magna, así que responder siempre que no ya da un 92 por ciento de accuracy, y no sirve para nada. También encontramos problemas en los datos. El fototipo estaba mezclado con una columna vecina, así que falta el 45 por ciento. Y 8 estudiantes son miopía magna en Combo, pero no en la columna MM. Probamos a corregirlos y mantuvimos las etiquetas originales, porque el único resultado firme de la corrección fue una caída de la accuracy. Convertimos 49 columnas en 33 variables numéricas.
+Tenemos 132 estudiantes de entrenamiento con 49 columnas. Solo 10 están etiquetados con miopía magna, así que responder siempre que no ya da un 92 por ciento de accuracy y no encuentra a nadie. Por eso la accuracy sola no sirve para ordenar los modelos. Una variable destaca: la longitud axial, la longitud del ojo, que sube de 23,5 milímetros en los controles a 24,5 en miopía y 26,4 en miopía magna.
 
-## Slide 5: With so little data, the method matters most
-
-**Ana** (about 46 s)
-
-Con tan pocos datos, lo que más importa es el método. Repetimos diez veces una validación cruzada estratificada de cinco bloques, porque una sola partición dependería de dónde caen unos pocos positivos. Todo lo que se aprende de los datos se queda dentro de los bloques de entrenamiento, y el ajuste usa validación cruzada anidada. Escribimos una prueba que un modelo debe superar para sustituir a otro más simple. Mira la balanced accuracy y el macro-F1, y también informamos de la accuracy. Una vía de esa prueba se añadió después de ver resultados de validación, y el informe lo dice. Los estudiantes de test solo se usan una vez, para predecir.
-
-## Slide 6: Complex models rarely beat a one-feature baseline
-
-**Tomás** (about 31 s)
-
-Comparamos regresión logística, un SVM, un bosque aleatorio y XGBoost, que no vimos en clase. XGBoost construye árboles pequeños uno tras otro, y cada uno corrige los errores de los anteriores. El punto grande rojo anaranjado es la regresión logística solo con la longitud axial. En balanced accuracy es muy difícil de superar. Solo en Combo quedan claramente por encima el bosque aleatorio y XGBoost, empatados entre sí. Con 132 estudiantes, más complejidad sobre todo añadió ruido.
-
-## Slide 7: Medicine gave us a better measurement
-
-**Tomás** (about 36 s)
-
-Así que miramos la medicina. Una persona es miope cuando el ojo es demasiado largo para la potencia de la córnea. El cociente entre la longitud axial y el radio corneal combina ambas cosas. Un estudio con 193 universitarios muestra que sube con la miopía, y en nuestros estudiantes también sube en cada escalón. Lo calculamos para cada estudiante, sin usar etiquetas. El enunciado no da las unidades de la queratometría, así que dedujimos que son dioptrías a partir de los datos, y lo decimos en el informe.
-
-## Slide 8: With the ratio, a new model won on every target
-
-**Tomás** (about 37 s)
-
-Con el cociente, un modelo nuevo superó nuestra prueba en todos los targets. M y DCombo usan regresión logística con longitud axial y cociente. Combo usa un bosque aleatorio con el cociente añadido. Y MM usa regresión logística solo con el cociente, con un umbral ajustado. También probamos un modelo ordinal para DCombo, que respeta el orden de las clases. Pasó la prueba, pero quedó por debajo de la regresión logística con el cociente, así que no lo elegimos. Son puntuaciones de validación, y enseguida mostraremos que son optimistas.
-
-## Slide 9: On MM, accuracy has a price: missed cases
-
-**Tomás** (about 43 s)
-
-MM muestra que la accuracy tiene un precio. Con el umbral por defecto, el modelo encuentra el 90 por ciento de los positivos, pero su accuracy queda por debajo de decir siempre que no. Con un umbral ajustado dentro de los datos de entrenamiento, la accuracy sube a 0,97, y encuentra el 79 por ciento. Volver a 0,5 encuentra aproximadamente un positivo más de cada diez, con unas doce falsas alarmas más. Mantuvimos el umbral ajustado, porque superó la segunda vía de nuestra prueba, y el test se evalúa con accuracy. En una clínica, la elección dependería de lo que cueste cada error.
-
-## Slide 10: The cornea may explain the eight odd students
+## Slide 5: Inconsistent labels
 
 **Tomás** (about 34 s)
 
-El cociente también aporta algo sobre los 8 estudiantes que se contradicen. Tienen los ojos tan largos como los del grupo MM, pero la córnea más plana, así que su cociente es más bajo. Una posible explicación es que la córnea compense en parte y los mantenga por debajo de seis dioptrías, mientras que Combo sigue a la longitud axial. Es solo una hipótesis sobre 8 estudiantes. No tenemos valores de refracción, y sus cocientes se solapan con los del grupo MM.
+También encontramos 8 estudiantes con miopía magna en Combo pero no en la columna MM. Tres de sus cuatro objetivos dicen miopía magna, así que tratamos la columna MM como el error y la corregimos, lo que da 18 casos de magna. Sus ojos son tan largos como los del grupo magna, pero su córnea es más plana, así que podrían estar de verdad por debajo de seis dioptrías. Lo contamos como un riesgo.
 
-## Slide 11: We measured how optimistic our scores are
+## Slide 6: Cleaning and new features
 
-**Ana** (about 47 s)
+**Tomás** (about 41 s)
 
-Esta es la parte que más valoramos. Elegimos estos modelos con los mismos estudiantes que los puntúan, después de 42 pruebas de selección. Así que repetimos una aproximación de toda la selección dentro de los bloques. La mejora se mantiene en M, casi desaparece en MM para la balanced accuracy, y desaparece en DCombo. En Combo, al repetir la selección nunca salió el bosque que elegimos, y quedó por debajo de la longitud axial sola. También dimos información inútil a nuestra prueba. En Combo la sigue pasando aproximadamente una de cada tres veces, así que la elección de modelo ahí tiene poco respaldo. En M, MM y DCombo, la mejora real de la córnea supera a la de una córnea barajada. Así que la córnea parece aportar información real, pero las mejoras exactas son inciertas.
+Convertimos las 49 columnas en 32 variables numéricas. Quitamos 21: una vacía, doce que son combinación de otras, siete por criterio, y el fototipo, que estaba mezclado con una columna vecina y no servía para el 45 por ciento de los estudiantes. La imputación y el escalado se ajustan dentro de cada bloque de entrenamiento. Y añadimos una variable de la literatura médica: la longitud axial dividida por el radio de la córnea, porque la miopía aparece cuando el ojo es demasiado largo para la potencia de su córnea.
 
-## Slide 12: Two features drive the models; errors stay close
+## Slide 7: Class imbalance
 
 **Ana** (about 37 s)
 
-¿Qué usan los modelos? Casi solo la longitud axial y el cociente, incluso el bosque aleatorio, que tiene todas las variables disponibles. Eso describe a los modelos, no las causas de la miopía: la familia o el tiempo al aire libre podrían actuar a través de la longitud del ojo. ¿Y dónde fallan? Sobre todo entre clases vecinas. En DCombo, el 63 por ciento de las predicciones acierta, el 35 por ciento se queda a una clase, y el 2 por ciento más lejos. M1 es la clase más difícil.
+Las clases están desequilibradas, así que hicimos cuatro cosas. Bloques estratificados, para que cada bloque conserve la clase magna. Pesos de clase equilibrados, para que las clases raras cuenten lo mismo al entrenar. Balanced accuracy y macro-F1 para elegir los modelos, siempre con la accuracy al lado. Y un umbral ajustado para MM, que probamos y no mejoró el 0,5 por defecto. La trampa es un modelo que siempre dice que no: parece preciso, pero no encuentra ningún caso de magna.
 
-## Slide 13: What we expect on the test set
+## Slide 8: Validation
 
-**Ana** (about 39 s)
+**Ana** (about 36 s)
 
-Esto es lo que esperamos en el test, antes de que se corrija. Con 24 estudiantes, solo el azar mueve el resultado cuatro o cinco alumnos, así que son rangos, no promesas. En M, Combo y DCombo, las dos estimaciones están por encima de la clase mayoritaria. En MM, van de quedar más o menos igual a superarla. Un riesgo: nuestro modelo dice miopía magna en 5 de los 24 estudiantes de test, frente al 8 por ciento en entrenamiento. Es compatible con el azar, y no lo cambiamos, porque sería elegir con el test. Además, 3 de los 24 estudiantes reciben etiquetas que se contradicen entre objetivos, por ejemplo sin miopía en M pero con miopía en Combo. Las dejamos como salieron.
+Con tan pocos datos, lo que más importa es la validación. Todo lo que aprende de los datos está en un pipeline que se reajusta en cada bloque de entrenamiento, así que nada se filtra. Repetimos diez veces una validación cruzada estratificada de cinco bloques y damos la dispersión, no un solo número. Los modelos ajustados usan validación cruzada anidada, con una búsqueda en rejilla interna. Y el test se usa una sola vez, solo para predecir.
 
-## Slide 14: What we take away
+## Slide 9: Candidate models
 
-**Tomás** (about 22 s)
+**Ana** (about 27 s)
 
-Para terminar, tres ideas. En nuestras comparaciones, conocer el problema dio mejoras que la complejidad no dio, aunque no probamos los modelos complejos con el cociente, y la mejora que resiste nuestra comprobación anidada es clara sobre todo en M. Medir nuestras propias dudas forma parte del resultado, no es un extra. Y el límite está en parte en los datos: más estudiantes y una medida directa de la refracción probablemente ayudarían más que otro modelo. Gracias.
+Comparamos cuatro familias de modelos: regresión logística; un SVM con kernel RBF; un bosque aleatorio; y XGBoost, que no vimos en clase. Construye árboles pequeños uno detrás de otro, y cada uno corrige los errores de los anteriores. Además probamos dos ideas: el cociente axial/corneal y un modelo ordinal para DCombo, que respeta el orden de las clases.
 
-## Slide 15: Team and tools
+## Slide 10: Decision rule
+
+**Ana** (about 32 s)
+
+Escribimos la regla de decisión antes de ejecutar los modelos. La referencia es la mejor línea base logística. Un candidato tiene que ser claramente mejor, es decir, su mejora media emparejada entre repeticiones tiene que superar una desviación típica, por una de dos vías, y tiene que pasar otra vez en bloques nuevos. La vía B se añadió después de ver resultados de validación, y el informe lo dice.
+
+## Slide 11: How we used generative AI
 
 **Tomás** (about 18 s)
 
-Estas últimas diapositivas las pide el enunciado. Hicimos todas las partes juntos y tomamos las decisiones en conjunto, con un reparto de cincuenta-cincuenta. No usamos Keras ni PyTorch. Usamos scikit-learn y XGBoost, porque con 132 estudiantes las redes neuronales eran difíciles de justificar.
+Usamos IA generativa durante todo el trabajo, sobre todo Claude Code. Escribió buena parte del código y del texto de los notebooks, respondió dudas conceptuales, propuso enfoques y revisó la metodología y los gráficos. Las decisiones fueron nuestras.
 
-## Slide 16: How we used generative AI
+## Slide 12: Baselines
 
-**Tomás** (about 31 s)
+**Ana** (about 25 s)
 
-Usamos IA generativa durante todo el trabajo, principalmente Claude Code. Generó buena parte del código y redactó el texto de los notebooks, respondió nuestras dudas conceptuales, propuso enfoques y reglas, encontró la literatura sobre el cociente, revisó el trabajo, construyó estas diapositivas y redactó el guion de este vídeo. Nosotros tomamos las decisiones, le propusimos ideas a la IA y llevamos un registro de su uso, que va incluido en la entrega. Gracias por vernos.
+Primero, las líneas base. Responder siempre la clase mayoritaria no encuentra ningún caso de magna. La regresión logística solo con la longitud axial es fuerte: en balanced accuracy, las 32 variables no lo hacen mejor en ningún objetivo. Así que la mejor de las dos es el listón que todo modelo tiene que superar.
+
+## Slide 13: Model comparison
+
+**Ana** (about 28 s)
+
+Frente a ese listón, los ensembles de árboles ganaron en dos objetivos: XGBoost en MM y el bosque aleatorio en Combo. El cociente ayudó en M, Combo y DCombo, pero no en MM, donde la longitud axial sola separa mejor las clases. A la derecha, el bosque de Combo se apoya casi solo en la longitud axial y el cociente.
+
+## Slide 14: Final models
+
+**Ana** (about 30 s)
+
+Así que cada objetivo tiene su modelo. M: regresión logística con longitud axial y cociente, con balanced accuracy de 0,80. MM: XGBoost con las 32 variables y el umbral por defecto, con balanced accuracy de 0,90 y accuracy de 0,96, frente al 0,86 de decir siempre que no. Combo: el bosque aleatorio con el cociente, 0,77. DCombo: regresión logística con longitud axial y cociente, 0,65.
+
+## Slide 15: Where the models fail
+
+**Tomás** (about 30 s)
+
+¿Dónde fallan los modelos? Sobre todo entre clases vecinas. En DCombo, el 63 por ciento de las predicciones aciertan, el 35 por ciento fallan por una clase y el 2 por ciento por más. M1 es la clase más difícil: a menudo se confunde con control. El modelo de MM pierde más o menos un caso de magna de cada seis, con muy pocas falsas alarmas.
+
+## Slide 16: How optimistic are the scores
+
+**Tomás** (about 44 s)
+
+Elegimos estos modelos con los mismos estudiantes que los puntúan, después de 44 pruebas de selección, así que las puntuaciones los favorecen. Repetimos toda la selección dentro de los bloques. La mejora sobre la longitud axial se mantiene en M y en MM, donde XGBoost se elige en todos los bloques. Desaparece en DCombo, y en Combo la selección repetida queda por debajo de la longitud axial. Con información inútil, nuestra prueba todavía pasa una de cada tres veces en Combo, así que esa elección es débil. Las puntuaciones de validación cruzada son un techo.
+
+## Slide 17: Expected test accuracy
+
+**Tomás** (about 34 s)
+
+Esto es lo que esperamos en el test. Con 24 estudiantes, cada uno vale 0,04 de accuracy, y solo el azar mueve el resultado cuatro o cinco estudiantes. Esperamos los cuatro objetivos por encima de la clase mayoritaria, MM con claridad. Un riesgo: nuestro modelo dice miopía magna para 5 de los 24 estudiantes de test, más que en entrenamiento, pero compatible con el azar. No cambiamos ninguna etiqueta después de ver el test.
+
+## Slide 18: Conclusions
+
+**Ana** (about 33 s)
+
+Para terminar. Lo simple primero: la longitud axial y una regresión logística igualaron a modelos complejos en M y DCombo. El conocimiento del dominio ayudó: el cociente dio mejoras, sobre todo en M. Y medir nuestra duda es parte del resultado. Los límites están en los datos: 132 estudiantes, 18 casos de magna y ningún valor de refracción. Más estudiantes y una medida directa de la refracción ayudarían más que otro modelo.
+
+## Slide 19: Team and tools
+
+**Tomás** (about 12 s)
+
+Tomás y Ana hicimos todas las partes juntos, y el trabajo se repartió al cincuenta por ciento. Nuestros modelos están hechos con scikit-learn y XGBoost.
+
+## Slide 20: Thank you
+
+**Ana** (about 2 s)
+
+Gracias por vuestra atención.

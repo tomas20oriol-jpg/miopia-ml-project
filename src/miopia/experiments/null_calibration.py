@@ -15,7 +15,7 @@ from joblib import Parallel, delayed
 from miopia.config import RESULTS
 from miopia.data import load_raw
 from miopia.features import clean_features, with_axial_corneal_ratio
-from miopia.validation import evaluate, logistic_baseline, make_strata, selection_test
+from miopia.validation import correct_mm_labels, evaluate, logistic_baseline, make_strata, selection_test
 
 RUNS = 200
 RATIO = "axial_corneal_ratio"
@@ -39,7 +39,8 @@ def one_run(target, candidate, reference, kind, run, X, Y):
 
 
 def main():
-    X_raw, Y, _ = load_raw()
+    X_raw, Y_provided, _ = load_raw()
+    Y = correct_mm_labels(Y_provided)     # decision B2
     clean = clean_features(X_raw)
     X = with_axial_corneal_ratio(clean)
     features = list(clean.columns)
@@ -47,7 +48,7 @@ def main():
                    "DCombo, axial + ratio vs axial": ("DCombo", AXIAL + [RATIO], AXIAL),
                    "Combo, axial + ratio vs axial": ("Combo", AXIAL + [RATIO], AXIAL),
                    "MM, ratio vs axial": ("MM", [RATIO], AXIAL),
-                   "MM, ratio vs all 33": ("MM", [RATIO], features)}
+                   "MM, ratio vs all 32": ("MM", [RATIO], features)}
     rows = {}
     for label, (target, candidate, reference) in comparisons.items():
         strata = make_strata(Y, target)

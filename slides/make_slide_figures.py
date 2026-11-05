@@ -27,9 +27,9 @@ def save(fig, name):
 
 
 # Balanced accuracy of each model (notebook 04, section 4)
-MODELS = ["Logistic\naxial only", "Logistic\nall 33", "Logistic\ntuned", "SVM", "Random\nforest", "XGBoost"]
-SCORES = {"M": [0.77, 0.77, 0.75, 0.71, 0.73, 0.74], "MM": [0.81, 0.79, 0.77, 0.75, 0.61, 0.68],
-          "Combo": [0.71, 0.68, 0.65, 0.66, 0.73, 0.73], "DCombo": [0.60, 0.51, 0.49, 0.49, 0.59, 0.56]}
+MODELS = ["Logistic\naxial only", "Logistic\nall 32", "Logistic\ntuned", "SVM", "Random\nforest", "XGBoost"]
+SCORES = {"M": [0.77, 0.77, 0.76, 0.70, 0.74, 0.74], "MM": [0.88, 0.87, 0.87, 0.86, 0.89, 0.90],
+          "Combo": [0.71, 0.70, 0.66, 0.67, 0.74, 0.73], "DCombo": [0.60, 0.51, 0.50, 0.48, 0.59, 0.56]}
 MAJORITY_BA = {"M": 0.5, "MM": 0.5, "Combo": 0.33, "DCombo": 0.25}
 fig, axes = plt.subplots(1, 4, figsize=(13, 4.8), sharey=True, sharex=True)
 for ax, target in zip(axes, TARGETS):
@@ -50,8 +50,8 @@ fig.tight_layout()
 save(fig, "models")
 
 # Baseline to final model (notebook 04, final table)
-BASE = {"Balanced accuracy": [0.77, 0.81, 0.71, 0.60], "Accuracy": [0.77, 0.82, 0.65, 0.56]}
-FINAL = {"Balanced accuracy": [0.80, 0.89, 0.77, 0.65], "Accuracy": [0.80, 0.97, 0.75, 0.63]}
+BASE = {"Balanced accuracy": [0.77, 0.88, 0.71, 0.60], "Accuracy": [0.77, 0.88, 0.65, 0.56]}
+FINAL = {"Balanced accuracy": [0.80, 0.90, 0.77, 0.65], "Accuracy": [0.80, 0.96, 0.76, 0.63]}
 fig, axes = plt.subplots(1, 2, figsize=(8.2, 4.6), sharey=True)
 for ax, metric in zip(axes, BASE):
     y = np.arange(4)
@@ -72,16 +72,16 @@ save(fig, "results")
 # Optimism check (notebook 04, section 11)
 GROUPS = ["M", "MM", "DCombo"]
 fig, ax = plt.subplots(figsize=(7.4, 3.9))
-series = {"Axial length alone": ([0.77, 0.81, 0.59], VERMILLION, "o"), "Repeating all the selection": ([0.79, 0.82, 0.59], "#E69F00", "D"),
-          "Notebook score, final model": ([0.80, 0.89, 0.65], BLUE, "s")}
+series = {"Axial length alone": ([0.77, 0.89, 0.59], VERMILLION, "o"), "Repeating all the selection": ([0.79, 0.91, 0.59], "#E69F00", "D"),
+          "Notebook score, final model": ([0.80, 0.90, 0.65], BLUE, "s")}
 for offset, (label, (values, color, marker)) in zip([-0.14, 0, 0.14], series.items()):
     ax.scatter(values, np.arange(3) + offset, s=170, color=color, marker=marker, label=label, zorder=3, alpha=0.9)
-for i, (low, high) in enumerate([(0.77, 0.80), (0.81, 0.89), (0.59, 0.65)]):
+for i, (low, high) in enumerate([(0.77, 0.80), (0.89, 0.91), (0.59, 0.65)]):
     ax.plot([low, high], [i - 0.14, i + 0.14], color="0.8", lw=3, zorder=1)
 ax.set_yticks(range(3), GROUPS)
 ax.invert_yaxis()
 ax.set_ylim(2.5, -0.5)
-ax.set_xlim(0.55, 0.92)
+ax.set_xlim(0.55, 0.95)
 ax.set_xlabel("Balanced accuracy")
 ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.24), ncol=1, frameon=False, fontsize=12)
 save(fig, "optimism")
@@ -119,7 +119,7 @@ ax.set_title("DCombo, validation students", fontweight="bold")
 ax.spines[:].set_visible(False)
 save(fig, "dcombo_errors")
 
-IMPORTANCE = {"Axial length": 0.297, "Axial/corneal ratio": 0.131, "Study hours": 0.005, "Nasal SD": 0.005, "CUVAF SD": 0.003}
+IMPORTANCE = {"Axial length": 0.297, "Axial/corneal ratio": 0.133, "Sport hours": 0.012, "Indoor hours": 0.010, "Temporal SD": 0.007}
 fig, ax = plt.subplots(figsize=(6.4, 3.0))
 y = np.arange(len(IMPORTANCE))
 values = list(IMPORTANCE.values())
@@ -131,13 +131,13 @@ ax.set_yticks(y, list(IMPORTANCE))
 ax.invert_yaxis()
 ax.set_xlim(0, 0.36)
 ax.set_xlabel("Drop in balanced accuracy when shuffled")
-ax.set_title("Combo forest, top 5 of 34 features (means)", fontweight="bold")
+ax.set_title("Combo forest, top 5 of 33 features (means)", fontweight="bold")
 save(fig, "importance")
 
 # Expected accuracy on the test set (notebook 05, section 6)
-CV = [0.80, 0.97, 0.75, 0.63]
-WHOLE = [0.79, 0.92, 0.68, 0.57]
-MAJORITY = [0.67, 0.92, 0.53, 0.33]
+CV = [0.80, 0.96, 0.76, 0.63]
+WHOLE = [0.79, 0.97, 0.68, 0.57]
+MAJORITY = [0.67, 0.86, 0.53, 0.33]
 RANGES = [(15, 23), (21, 24), (14, 22), (11, 20)]
 fig, ax = plt.subplots(figsize=(7.6, 4.2))
 for i, (low, high) in enumerate(RANGES):
@@ -156,4 +156,18 @@ save(fig, "expected")
 ratio = Image.open(FIGURES / "04_ratio_by_class.png")
 width, height = ratio.size
 ratio.crop((0, int(height * 0.075), width, height)).save(OUT / "ratio.png")
+
+# The candidate comparison of notebook 04, without its title and legend: the slide states the message
+comparison = Image.open(FIGURES / "04_model_comparison.png")
+width, height = comparison.size
+comparison.crop((0, round(height * 0.075), width, round(height * 0.935))).save(OUT / "model_comparison.png")
+
+# Two reviewed figures of notebook 01 for the data-exploration slides, cropped without their titles:
+# the class counts of the four targets, and the axial-length panel of the class comparison
+targets = Image.open(FIGURES / "01_targets.png")
+width, height = targets.size
+targets.crop((0, round(height * 0.098), width, height)).save(OUT / "targets.png")
+numeric = Image.open(FIGURES / "01_numeric_by_class.png")
+width, height = numeric.size
+numeric.crop((0, round(height * 0.074), round(width * 0.256), round(height * 0.527))).save(OUT / "axial_by_class.png")
 print("saved", sorted(p.name for p in OUT.glob("*.png")))

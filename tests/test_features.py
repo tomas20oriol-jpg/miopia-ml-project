@@ -6,7 +6,7 @@ import pytest
 
 from miopia.config import RAW
 from miopia.features import (
-    COLUMN_DECISIONS, FEATURE_COLUMNS, clean_features, make_preprocessor,
+    COLUMN_DECISIONS, FEATURE_COLUMNS, clean_features, make_preprocessor, parse_phototype,
 )
 
 HAS_DATA = (RAW / "X_train.csv").exists() and (RAW / "X_test.csv").exists()
@@ -44,9 +44,13 @@ def test_foreign_ancestors(text, expected):
 
 
 def test_phototype_keeps_only_real_phototypes():
-    out = clean_features(raw_rows(fototipo=["Fototipo 3", "E", "L", np.nan, "Fototipo 1"]))
-    assert out["phototype"].iloc[[0, 4]].tolist() == [3, 1]
-    assert out["phototype"].iloc[[1, 2, 3]].isna().all()
+    out = parse_phototype(pd.Series(["Fototipo 3", "E", "L", np.nan, "Fototipo 1"]))
+    assert out.iloc[[0, 4]].tolist() == [3, 1]
+    assert out.iloc[[1, 2, 3]].isna().all()
+
+
+def test_phototype_is_not_a_feature():
+    assert "phototype" not in clean_features(raw_rows(fototipo=["Fototipo 3"])).columns
 
 
 def test_relatives_flags():
@@ -93,9 +97,9 @@ def test_sex_is_missing_when_unknown_and_tolerates_spaces():
 
 
 def test_phototype_parser_is_case_insensitive_and_rejects_out_of_range():
-    out = clean_features(raw_rows(fototipo=["fototipo 2", "FOTOTIPO 4", "Fototipo 7", "Fototipo 0"]))
-    assert out["phototype"].iloc[:2].tolist() == [2, 4]
-    assert out["phototype"].iloc[2:].isna().all()
+    out = parse_phototype(pd.Series(["fototipo 2", "FOTOTIPO 4", "Fototipo 7", "Fototipo 0"]))
+    assert out.iloc[:2].tolist() == [2, 4]
+    assert out.iloc[2:].isna().all()
 
 
 def test_preprocessor_keeps_all_columns_even_if_one_is_empty_in_training():

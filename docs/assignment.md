@@ -42,10 +42,10 @@ Produce test labels "as accurate as possible", but "all the process to achieve t
 
 - [x] `01_eda` executed and merged
 - [x] `02` cleaning and feature engineering (executed; methodology and chart reviews done)
-- [x] `03` baselines and validation scheme (executed; methodology and chart reviews done; PR not merged)
-- [ ] `04` model comparison per target (executed; methodology and chart reviews applied; not merged)
-- [x] `05` final models, interpretation, **test labels** (executed; no AI review yet; not merged)
-- [ ] Slides, including the mandatory final slides
+- [x] `03` baselines and validation scheme (executed)
+- [x] `04` model comparison per target (executed)
+- [x] `05` final models, interpretation, **test labels** (executed)
+- [x] Slides, including the mandatory final slides (Canva; exported to `slides/myopia_presentation.pdf`)
 - [ ] Video
 - [ ] Zip built and `deliverables-checker` clean
 - [ ] Uploaded to ADI

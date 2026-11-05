@@ -48,8 +48,9 @@ COLUMN_DECISIONS: dict[str, tuple[str, str, str]] = {
     "Exterior Mucho": ("encode", "outdoor_much", "SI/NO to 1/0."),
     "Interior Mcho": ("encode", "indoor_much", "SI/NO to 1/0."),
     "fototipo": (
-        "derive", "phototype",
-        "Number 1-5 from 'Fototipo N'. The values 'E' and 'L' belong to `Grupo fot` (data-entry mix-up) and become missing."),
+        "drop", "",
+        "Only 73 of 132 training students have a real phototype 1-5: the values 'E' and 'L' belong to `Grupo fot` "
+        "(data-entry mix-up), so 45 % would have to be imputed (B9)."),
     "Grupo fot": ("drop", "", "Almost constant (2 'L' values)."),
     "familiar miope": (
         "derive", "father_myopic, mother_myopic, siblings_myopic, relatives_unknown",
@@ -99,7 +100,7 @@ COLUMN_DECISIONS: dict[str, tuple[str, str, str]] = {
 
 FEATURE_COLUMNS = [
     "age", "female", "foreign_ancestors", "sport_h", "outdoor_h", "study_h", "indoor_h",
-    "outdoor_much", "indoor_much", "phototype", "father_myopic", "mother_myopic",
+    "outdoor_much", "indoor_much", "father_myopic", "mother_myopic",
     "siblings_myopic", "relatives_unknown", "family_mm_yes",
     "family_mm_unknown", "smoker", "takes_sun", "sun_protection", "screens_before_sleep",
     "axial_length", "kerato_od", "kerato_od_axis2", "kerato_os", "kerato_os_axis2",
@@ -136,6 +137,12 @@ def _contains(column: pd.Series, word: str) -> pd.Series:
     return column.map(lambda v: float(word in _normalise(v)) if pd.notna(v) else 0.0)
 
 
+def parse_phototype(column: pd.Series) -> pd.Series:
+    """Phototype 1-5 from 'Fototipo N'; anything else (the 'E'/'L' of `Grupo fot`) is missing. Not a feature (B9)."""
+    return pd.to_numeric(column.map(lambda v: _normalise(v) if pd.notna(v) else "")
+                         .str.extract(r"fototipo\s*([1-5])\b")[0], errors="coerce").astype(float)
+
+
 def clean_features(X: pd.DataFrame) -> pd.DataFrame:
     """Return the model-ready numeric feature table for raw `X` (stateless, row-wise).
 
@@ -157,10 +164,6 @@ def clean_features(X: pd.DataFrame) -> pd.DataFrame:
     out["indoor_h"] = num("horas interior sem").fillna(num("hº estudiar sem") + num("hº ocio inter sem"))
     out["outdoor_much"] = _yes_no(X["Exterior Mucho"])
     out["indoor_much"] = _yes_no(X["Interior Mcho"])
-
-    out["phototype"] = pd.to_numeric(
-        X["fototipo"].map(lambda v: _normalise(v) if pd.notna(v) else "")
-        .str.extract(r"fototipo\s*([1-5])\b")[0], errors="coerce").astype(float)
 
     relatives = X["familiar miope"]
     out["father_myopic"] = _contains(relatives, "padre")

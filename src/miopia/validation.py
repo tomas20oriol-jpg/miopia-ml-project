@@ -26,7 +26,8 @@ SUMMARY_METRICS = ["balanced_accuracy", "macro_f1", "accuracy", "mcc"]
 
 
 def correct_mm_labels(Y: pd.DataFrame) -> pd.DataFrame:
-    """Return a copy of `Y` where every student with `Combo = MM` has `MM = SI` (the experiment of B2)."""
+    """Return a copy of `Y` where every student with `Combo = MM` has `MM = SI` (decision B2: the training labels
+    used from notebook 04 on)."""
     corrected = Y.copy()
     corrected.loc[corrected["Combo"] == "MM", "MM"] = "SI"
     return corrected

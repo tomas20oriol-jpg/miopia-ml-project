@@ -20,7 +20,7 @@ poetry run python -m miopia.experiments.nested_protocol
 poetry run python -m miopia.experiments.null_calibration
 ```
 
-**Reproducibility.** Every model uses a fixed seed, so a run gives the same numbers on the same machine with the versions in `poetry.lock`. Install with `poetry install`, not `pip install -e .`, which ignores the lock. With other library versions or another processor, the XGBoost scores move in the second decimal; in notebook 04 this can make the random forest rather than XGBoost come first in the first `Combo` round, since the two are level. The final models and `results/test_labels.txt` do not change.
+**Reproducibility.** Every model uses a fixed seed, so a run gives the same numbers on the same machine with the versions in `poetry.lock`. Install with `poetry install`, not `pip install -e .`, which ignores the lock. With other library versions or another processor, the XGBoost scores can move in the second decimal.
 
 ## Layout
 
@@ -31,7 +31,7 @@ poetry run python -m miopia.experiments.null_calibration
 | `src/miopia/experiments/` | The two scripts behind `results/experiments/` |
 | `results/` | `test_labels.txt`, and the saved aggregates in `experiments/` |
 | `reports/figures/` | Figures for the report and the slides |
-| `slides/` | The presentation, with speaker notes |
+| `slides/` | The presentation (`myopia_presentation.pdf`), speaker notes and video scripts |
 | `docs/` | `assumptions.md`, every decision and its reason; `ai_usage.md`, the log of generative-AI use |
 
 `src/miopia/models.py` defines the final model of each target in `final_model`.

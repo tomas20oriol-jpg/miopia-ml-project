@@ -134,5 +134,5 @@ def final_model(target: str, features: list[str]):
     if target in ("M", "DCombo"):
         return logistic_baseline(), ["axial_length", ratio]
     if target == "MM":
-        return with_tuned_threshold(logistic_baseline(), scoring="f1_macro"), [ratio]
+        return tuned_model("XGBoost"), features
     return tuned_model("Random forest"), features + [ratio]
